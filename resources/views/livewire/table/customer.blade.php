@@ -10,9 +10,9 @@
                     Nama
                     @include('components.sort-icon', ['field' => 'name'])
                 </a></th>
-                <th><a wire:click.prevent="sortBy('expired_date')" role="button" href="#">
-                        Waktu Habis
-                        @include('components.sort-icon', ['field' => 'expired_date'])
+                <th><a wire:click.prevent="sortBy('registration_date')" role="button" href="#">
+                        Tanggal Registrasi
+                        @include('components.sort-icon', ['field' => 'registration_date'])
                     </a></th>
                 <th><a wire:click.prevent="sortBy('address')" role="button" href="#">
                     Alamat
@@ -33,8 +33,8 @@
                 <tr x-data="window.__controller.dataTableController({{ $m->id }})">
                     <td>{{ $m->id }}</td>
                     <td>{{ $m->name }}</td>
-{{--                    {{dd(DateTime::createFromFormat('d-m-Y', "20-12-2023"))}}--}}
-                    <td>{{ date_diff(\Carbon\Carbon::now()->toDate(), DateTime::createFromFormat('Y-m-d', $m->expired_date))->format("%a Hari") }}</td>
+                    <td>{{ \Carbon\Carbon::parse($m->registration_date)->format('d-m-Y') }}</td>
+{{--                    <td>{{ date_diff(\Carbon\Carbon::now()->toDate(), DateTime::createFromFormat('Y-m-d', $m->registration_date))->format("%a Hari") }}</td>--}}
                     <td>{{ $m->address }}</td>
                     <td><img src="{{ asset('storage/img/location_picture/'.$m->location_picture) }}" alt="" style="width: 100px"></td>
                     <td>

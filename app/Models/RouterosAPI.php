@@ -434,7 +434,7 @@ class RouterosAPI extends Model
             }
         }
 
-        dd($this->read());
+//        dd($this->read());
         return $this->read();
     }
 

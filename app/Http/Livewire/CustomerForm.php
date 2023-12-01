@@ -37,7 +37,7 @@ class CustomerForm extends Component
                 'customer.longitude' => 'required',
                 'customer.latitude' => 'required',
                 'customer.identity_number' => 'required',
-                'customer.expired_date' => 'required',
+                'customer.registration_date' => 'required',
             ];
         } else {
             return [

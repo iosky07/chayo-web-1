@@ -40,7 +40,7 @@
                         </ul>
                     </li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                    <li><a class="getstarted scrollto" href="{{ route('login') }}">Get Started</a></li>
+                    <li><a class="getstarted scrollto" href="{{ route('login') }}">Login</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -77,27 +77,39 @@
                 <div class="row">
 
                     <div class="col-lg-2 col-md-4 col-6">
-                        <img src={{asset("template-assets/assets/img/clients/client-1.png")}} class="img-fluid" alt="" data-aos="zoom-in">
+                        <img src={{asset("template-assets/assets/img/clients/fiberstar-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in">
                     </div>
 
                     <div class="col-lg-2 col-md-4 col-6">
-                        <img src="template-assets/assets/img/clients/client-2.png" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
+                        <img src={{asset("template-assets/assets/img/clients/herza-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
                     </div>
 
                     <div class="col-lg-2 col-md-4 col-6">
-                        <img src="template-assets/assets/img/clients/client-3.png" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="200">
+                        <img src={{asset("template-assets/assets/img/clients/indosat-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="200">
                     </div>
 
                     <div class="col-lg-2 col-md-4 col-6">
-                        <img src="template-assets/assets/img/clients/client-4.png" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="300">
+                        <img src={{asset("template-assets/assets/img/clients/jinom-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="300">
                     </div>
 
                     <div class="col-lg-2 col-md-4 col-6">
-                        <img src="template-assets/assets/img/clients/client-5.png" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="400">
+                        <img src={{asset("template-assets/assets/img/clients/apjii-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="400">
                     </div>
 
                     <div class="col-lg-2 col-md-4 col-6">
-                        <img src="template-assets/assets/img/clients/client-6.png" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="500">
+                        <img src={{asset("template-assets/assets/img/clients/jinom-reseller-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="500">
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <img src={{asset("template-assets/assets/img/clients/bpjstk-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="500">
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <img src={{asset("template-assets/assets/img/clients/iosys-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="500">
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <img src={{asset("template-assets/assets/img/clients/kominfo-logo.png")}} class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="500">
                     </div>
 
                 </div>
@@ -151,8 +163,8 @@
                                 <div class="col-md-6 d-md-flex align-items-md-stretch">
                                     <div class="count-box">
                                         <i class="bi bi-emoji-smile"></i>
-                                        <span data-purecounter-start="0" data-purecounter-end="65" data-purecounter-duration="1" class="purecounter"></span>
-                                        <p><strong>Happy Clients</strong> consequuntur voluptas nostrum aliquid ipsam architecto ut.</p>
+                                        <span data-purecounter-start="0" data-purecounter-end="{{ \App\Models\Customer::count() }}" data-purecounter-duration="1" class="purecounter"></span>
+                                        <p><strong>Pelanggan Aktif</strong> yang berlangganan menggunakan paket Wifi Chayo.</p>
                                     </div>
                                 </div>
 
@@ -167,8 +179,8 @@
                                 <div class="col-md-6 d-md-flex align-items-md-stretch">
                                     <div class="count-box">
                                         <i class="bi bi-clock"></i>
-                                        <span data-purecounter-start="0" data-purecounter-end="18" data-purecounter-duration="1" class="purecounter"></span>
-                                        <p><strong>Years of experience</strong> aut commodi quaerat modi aliquam nam ducimus aut voluptate non vel</p>
+                                        <span data-purecounter-start="0" data-purecounter-end="{{ \Carbon\Carbon::now()->diffInYears(\Carbon\Carbon::create(2019, 2, 22)) }}" data-purecounter-duration="1" class="purecounter"></span>
+                                        <p><strong>Tahun Pengalaman</strong> bergerak pada bidang penyedia layanan internet</p>
                                     </div>
                                 </div>
 
@@ -709,7 +721,7 @@
 
                 <div class="section-title">
                     <h2>Harga Paket Wifi</h2>
-                    <p>Sit sint consectetur velit nemo qui impedit suscipit alias ea</p>
+                    <p>Berikut harga wifi untuk paket rumahan yang telah kami sediakan.</p>
                 </div>
 
                 <div class="row">
@@ -726,7 +738,7 @@
                                 <li class="na">Massa ultricies mi</li>
                             </ul>
                             <div class="btn-wrap">
-                                <a href="#" class="btn-buy">Buy Now</a>
+                                <a href="https://wa.me/6282332555886?text=Halo,%20Saya%20tertarik%20untuk%20mendaftar%20paket%20wifi%2015%20Mbps%20dengan%20harga%20Rp.166.000" target="_blank" class="btn-buy">Beli Sekarang</a>
                             </div>
                         </div>
                     </div>
@@ -743,7 +755,7 @@
                                 <li class="na">Massa ultricies mi</li>
                             </ul>
                             <div class="btn-wrap">
-                                <a href="#" class="btn-buy">Buy Now</a>
+                                <a href="https://wa.me/6282332555886?text=Halo,%20Saya%20tertarik%20untuk%20mendaftar%20paket%20wifi%2025%20Mbps%20dengan%20harga%20Rp.222.000" target="_blank" class="btn-buy">Beli Sekarang</a>
                             </div>
                         </div>
                     </div>
@@ -760,7 +772,7 @@
                                 <li>Massa ultricies mi</li>
                             </ul>
                             <div class="btn-wrap">
-                                <a href="#" class="btn-buy">Buy Now</a>
+                                <a hhref="https://wa.me/6282332555886?text=Halo,%20Saya%20tertarik%20untuk%20mendaftar%20paket%20wifi%2035%20Mbps%20dengan%20harga%20Rp.333.000" target="_blank" class="btn-buy">Beli Sekarang</a>
                             </div>
                         </div>
                     </div>
@@ -775,13 +787,13 @@
             <div class="container">
 
                 <div class="section-title" data-aos="fade-up">
-                    <h2>Frequently Asked Questions</h2>
+                    <h2>Sering Ditanyakan</h2>
                 </div>
 
                 <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                     <div class="col-lg-5">
                         <i class="ri-question-line"></i>
-                        <h4>Non consectetur a erat nam at lectus urna duis?</h4>
+                        <h4>Apakah Chayo merupakan ISP Resmi?</h4>
                     </div>
                     <div class="col-lg-7">
                         <p>
@@ -793,7 +805,7 @@
                 <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                     <div class="col-lg-5">
                         <i class="ri-question-line"></i>
-                        <h4>Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?</h4>
+                        <h4>Cakupan area yang tercover jaringan Chayo ada di mana saja?</h4>
                     </div>
                     <div class="col-lg-7">
                         <p>
@@ -805,7 +817,7 @@
                 <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
                     <div class="col-lg-5">
                         <i class="ri-question-line"></i>
-                        <h4>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi?</h4>
+                        <h4>Bagaimana cara mendaftar jadi pelanggan wifi baru?</h4>
                     </div>
                     <div class="col-lg-7">
                         <p>
@@ -817,7 +829,7 @@
                 <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
                     <div class="col-lg-5">
                         <i class="ri-question-line"></i>
-                        <h4>Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?</h4>
+                        <h4>Bagaimana cara mendaftar jadi Reseller Chayo?</h4>
                     </div>
                     <div class="col-lg-7">
                         <p>
@@ -829,7 +841,7 @@
                 <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="500">
                     <div class="col-lg-5">
                         <i class="ri-question-line"></i>
-                        <h4>Tempus quam pellentesque nec nam aliquam sem et tortor consequat?</h4>
+                        <h4>Apa keuntungan berlangganan wifi Chayo?</h4>
                     </div>
                     <div class="col-lg-7">
                         <p>
@@ -854,7 +866,7 @@
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                         <div class="contact-about">
                             <h3>Chayo</h3>
-                            <p>Cras fermentum odio eu feugiat. Justo eget magna fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
+                            <p>PT. Chayo Anugrah Teknologi merupakan salah satu perusahaan resmi yang ruang lingkup kegiatannya adalah menjalankan usaha berbasis teknologi informasi (Informatio Teknologi IT) yang dengan pengembangan inovasinya telash berhasil dan telah mulai dipercaya memberikan aspek efisiensi dan efektifitas ketersediaan akses jaringan internet dari hilir ke hulu.</p>
                             <div class="social-links">
                                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -868,17 +880,17 @@
                         <div class="info">
                             <div>
                                 <i class="ri-map-pin-line"></i>
-                                <p>A108 Adam Street<br>New York, NY 535022</p>
+                                <p><a href="https://maps.app.goo.gl/jUJByV6uehrZV7oV7" target="_blank">Jl. Hasanudin, Dusun Krajan B,<br>Desa Wonorejo, Kecamatan Kencong, <br>Kab. Jember (68167)</a></p>
                             </div>
 
                             <div>
                                 <i class="ri-mail-send-line"></i>
-                                <p>info@example.com</p>
+                                <p><a href="mailto:info@chayo.web.id" target="_blank">info@chayo.web.id</a></p>
                             </div>
 
                             <div>
-                                <i class="ri-phone-line"></i>
-                                <p>+1 5589 55488 55s</p>
+                                <i class="ri-whatsapp-line"></i>
+                                <p><a href="https://wa.me/6282332555886" target="_blank">+6282332555886</a></p>
                             </div>
 
                         </div>

@@ -11,7 +11,7 @@ class Customer extends Model
 
     protected $keyType = 'integer';
 
-    protected $fillable = ['name', 'address', 'phone_number', 'packet_tag_id', 'expired_date', 'identity_picture', 'location_picture', 'longitude', 'latitude', 'identity_number', 'user_id', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'address', 'phone_number', 'packet_tag_id', 'registration_date', 'identity_picture', 'location_picture', 'longitude', 'latitude', 'identity_number', 'user_id', 'created_at', 'updated_at'];
 
     public function user()
     {
