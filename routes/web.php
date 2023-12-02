@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdditionController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\OffenseController;
 use App\Http\Controllers\Admin\PacketTagController;
@@ -39,16 +40,7 @@ Route::get('/dashboard', function () {
     return redirect(route('admin.dashboard'));
 });
 
-//Route::get('/', function () {
-//    return view('pages.landing.menu.index');
-//});
-
 Route::get('/', [SiteController::class, 'home'])->name('home');
-//Route::get('/tentang-kami', [SiteController::class, 'about'])->name('tentang-kami');
-//Route::get('/blog', [SiteController::class, 'blog'])->name('blog');
-//Route::get('/single-blog', [SiteController::class, 'singleBlog'])->name('single-blog');
-//Route::get('/point-detail/{nim}', [SiteController::class, 'pointDetail'])->name('point-detail');
-//Route::get('/ppmb', [SiteController::class, 'contact'])->name('ppmb');
 
 Route::get('update-photo',function (){
     return redirect(route('admin.profile.show'));
@@ -71,6 +63,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verif
     Route::resource('addition', AdditionController::class);
     Route::resource('customer', CustomerController::class);
     Route::resource('packet-tag', PacketTagController::class);
+    Route::resource('log', LogController::class);
 //    Route::middleware(['checkRole:1']){}
     Route::middleware(['checkRole:1'])->group(function () {
         Route::get('/user', [UserController::class, "index"])->name('user');

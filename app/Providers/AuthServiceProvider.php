@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Log;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -12,8 +15,9 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
+    public $log;
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+//         'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -23,6 +27,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+//        dd("Im Here");
+//        $this->log = [
+//            'user_id' => Auth::id(),
+//            'access' => 'LOGIN',
+//            'activity' => 'user Yoski has logged in'
+//        ];
+//
+//        Log::create($this->log);
         $this->registerPolicies();
 
         //

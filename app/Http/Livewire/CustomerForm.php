@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Customer;
+use App\Models\Log;
 use App\Models\PacketTag;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -25,6 +26,8 @@ class CustomerForm extends Component
     public $packet_tag_id;
     public $optionPacketTags;
     public $packetTags;
+    public $log;
+    public $temp;
 
     protected function rules() {
         if ($this->action == 'create') {
@@ -47,6 +50,7 @@ class CustomerForm extends Component
                 'customer.longitude' => 'required',
                 'customer.latitude' => 'required',
                 'customer.identity_number' => 'required',
+                'customer.registration_date' => 'required',
             ];
         }
     }
@@ -60,18 +64,22 @@ class CustomerForm extends Component
         'customer.longitude.required' => 'Longitude tidak boleh kosong.',
         'customer.latitude.required' => 'Latitude tidak boleh kosong.',
         'customer.identity_number.required' => 'NIK tidak boleh kosong.',
+        'customer.registration_date.required' => 'Tanggal tidak boleh kosong.',
     ];
 
     public function mount()
     {
         $this->customer['packet_tag_id'] = 1;
+        $this->customer['created_at'] = '';
+//        $this->customer['registration_date'] = '2023-12-20';
         $this->packetTags = [1];
         $this->optionPacketTags = eloquent_to_options(PacketTag::get(), 'id', 'title');
+
 
         if ($this->dataId!=''){
 
             $c = Customer::findOrFail($this->dataId);
-
+//            dd($c->registration_date);
             $this->customer=[
                 'name'=>$c->name,
                 'address'=>$c->address,
@@ -82,9 +90,13 @@ class CustomerForm extends Component
                 'latitude'=>$c->latitude,
                 'identity_number'=>$c->identity_number,
                 'packet_tag_id'=>$c->packet_tag_id,
+                'registration_date'=>$c->registration_date,
+                'created_at'=>$c->created_at,
             ];
 
+
         }
+//        dd($this->customer['registration_date']);
     }
 
     public function create()
@@ -101,8 +113,17 @@ class CustomerForm extends Component
 
         $this->customer['user_id'] = Auth::id();
 
-//        dd($this->customer);
         Customer::create($this->customer);
+
+        $this->temp = Customer::latest('id')->first();
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'create',
+            'activity' => 'create user id '.$this->temp['id']
+        ];
+
+        Log::create($this->log);
 
         $this->emit('swal:alert', [
             'type'    => 'success',
@@ -116,7 +137,38 @@ class CustomerForm extends Component
     public function update() {
 
         $this->validate();
+
+        $changed_data = [];
+
+        $model_array = [
+            'name', 'address', 'phone_number', 'packet_tag_id', 'registration_date', 'identity_picture', 'location_picture', 'longitude', 'latitude', 'identity_number'
+        ];
+
+        #ambil data cust sebelum update
+        $model_temp = Customer::find($this->dataId);
+
+        #proses save setelah update
         Customer::find($this->dataId)->update($this->customer);
+
+        #ambil data cust setelah update
+        $model_temp_1 = Customer::find($this->dataId);
+
+        #cari data apa saja yang diubah
+        foreach ($model_array as $item) {
+            if ($model_temp[$item] != $model_temp_1[$item]) {
+                $changed_data[] = $item;
+            }
+        }
+
+        $changed_data = implode(', ', $changed_data);
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'update',
+            'activity' => 'update user id '.$model_temp['id'].' ['.$changed_data.']'.' changed'
+        ];
+
+        Log::create($this->log);
 
         $this->emit('swal:alert', [
             'type'    => 'success',

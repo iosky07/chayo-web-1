@@ -14,6 +14,8 @@ class DeleteUser implements DeletesUsers
      */
     public function delete($user)
     {
+//        LOG BELUM
+
         $user->delete();
     }
 }

@@ -37,6 +37,14 @@ if (Auth::user()->role==1) {
                         ["href" => "admin.customer.create", "text" => "Tambah Pelanggan"]
                         ]
                 ],
+
+                [
+                    "section_text" => "Log Aktifitas",
+                    "section_icon" => "fa fa-users",
+                    "section_list" => [
+                        ["href" => "admin.log.index", "text" => "Data Log"],
+                        ]
+                ],
             ],
             "text" => "Admin",
             "is_multi" => true,

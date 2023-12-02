@@ -185,6 +185,23 @@ class Main extends Component
                 ];
                 break;
 
+            case 'log':
+                $logs = $this->model::search($this->search)
+                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                    ->paginate($this->perPage);
+
+                return [
+                    "view" => 'livewire.table.log',
+                    "logs" => $logs,
+                    "data" => array_to_object([
+                        'href' => [
+                            'export' => '#',
+                            'export_text' => 'Export'
+                        ]
+                    ])
+                ];
+                break;
+
             default:
                 # code...
                 break;
