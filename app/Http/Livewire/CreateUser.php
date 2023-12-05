@@ -33,6 +33,8 @@ class CreateUser extends Component
         $this->resetErrorBag();
         $this->validate();
 
+        $this->user['id'] = User::latest()->value('id') + 1;
+
         $password = $this->user['password'];
 
         if ( !empty($password) ) {
@@ -59,7 +61,7 @@ class CreateUser extends Component
 
     public function mount ()
     {
-        $this->user['role']='';
+        $this->user['role']='1';
         if (!!$this->userId) {
             $user = User::find($this->userId);
 

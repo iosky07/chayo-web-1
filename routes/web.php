@@ -42,6 +42,8 @@ Route::get('/dashboard', function () {
 
 Route::get('/', [SiteController::class, 'home'])->name('home');
 
+//Route::view('/login', 'auth.login')->name('login_form');
+
 Route::get('update-photo',function (){
     return redirect(route('admin.profile.show'));
 })->name('profile.show');

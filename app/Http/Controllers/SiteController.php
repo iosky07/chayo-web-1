@@ -13,6 +13,10 @@ class SiteController extends Controller
         return view('pages.landing.menu.index');
     }
 
+    public function login_form() {
+        return view('auth.login');
+    }
+
     public function about() {
         $member = Member::all();
 
