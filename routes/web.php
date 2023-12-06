@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdditionController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\OffenseController;
@@ -66,6 +67,8 @@ Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verif
     Route::resource('customer', CustomerController::class);
     Route::resource('packet-tag', PacketTagController::class);
     Route::resource('log', LogController::class);
+//    Route::resource('exportToTxt', ExportController::class);
+    Route::get('/log/export', [ExportController::class, 'exportToTxt'])->name('exportToTxt');
 //    Route::middleware(['checkRole:1']){}
     Route::middleware(['checkRole:1'])->group(function () {
         Route::get('/user', [UserController::class, "index"])->name('user');

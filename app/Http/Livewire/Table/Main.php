@@ -2,6 +2,10 @@
 
 namespace App\Http\Livewire\Table;
 
+use App\Models\Customer;
+use App\Models\Log;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -195,7 +199,7 @@ class Main extends Component
                     "logs" => $logs,
                     "data" => array_to_object([
                         'href' => [
-                            'export' => '#',
+                            'export' => route('exportToTxt'),
                             'export_text' => 'Export'
                         ]
                     ])
@@ -220,11 +224,20 @@ class Main extends Component
             return;
         }
 
-        $data->delete();
+//        $data->delete();
         $this->emit("deleteResult", [
             "status" => true,
             "message" => "Data " . $this->name . " berhasil dihapus!"
         ]);
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'delete',
+            'activity' => 'delete id '.$id.' from '.$this->name.' table.'
+        ];
+
+        Log::create($this->log);
+
     }
 
     public function render()

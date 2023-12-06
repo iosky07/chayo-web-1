@@ -41,9 +41,32 @@ class DashboardController extends Controller
             echo 'Tidak dapat terhubung ke MikroTik.';
         }
 
-//        dd($identitas);
+//        dd(count($identitas));
+//        dd($identitas[193]);
+        $array = [];
+        foreach ($identitas as $item) {
+            $temp_array = [];
+//            dd($item['name']);
+            $temp_array[] = $item['name'];
+            $temp_array[] = $item['password'];
+//            dd($temp_array);
+            $array[] = $temp_array;
+        }
 
+        // EXPORT TO CSV
+//        $filePath = storage_path('app/chayo_secret_data.csv');
+//
+//        $file = fopen($filePath, 'w');
+//
+//        foreach ($array as $row) {
+//            fputcsv($file, $row);
+//        }
+//
+//        fclose($file);
+//
+//        return response()->download($filePath)->deleteFileAfterSend(true);
 
+//        dd('berhasil');
         return view('dashboard');
     }
 }

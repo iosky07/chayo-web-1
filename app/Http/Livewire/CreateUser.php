@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Log;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
@@ -33,7 +35,7 @@ class CreateUser extends Component
         $this->resetErrorBag();
         $this->validate();
 
-        $this->user['id'] = User::latest()->value('id') + 1;
+//        $this->user['id'] = User::latest()->value('id') + 1;
 
         $password = $this->user['password'];
 
@@ -42,6 +44,16 @@ class CreateUser extends Component
         }
 
         User::create($this->user);
+
+        $this->temp = User::latest('id')->first();
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'create',
+            'activity' => 'create user id '.$this->temp['id'].' in User table'
+        ];
+
+        Log::create($this->log);
 
         $this->emit('saved');
         $this->reset('user');
@@ -52,9 +64,40 @@ class CreateUser extends Component
         $this->resetErrorBag();
         $this->validate();
 
+        $changed_data = [];
+
+        $model_array = [
+            'name', 'email', 'role'
+        ];
+
+        #ambil data cust sebelum update
+        $model_temp = User::find($this->userId);
+
         User::query()
             ->where('id', $this->userId)
             ->update($this->user);
+
+        #ambil data user setelah update
+        $model_temp_1 = User::find($this->userId);
+
+        #cari data apa saja yang diubah
+        foreach ($model_array as $item) {
+            if ($model_temp[$item] != $model_temp_1[$item]) {
+                $changed_data[] = $item;
+            }
+        }
+
+        $changed_data = implode(', ', $changed_data);
+
+        if ($changed_data != '') {
+            $this->log = [
+                'user_id' => Auth::id(),
+                'access' => 'update',
+                'activity' => 'update user id '.$model_temp['id'].' from User table. ['.$changed_data.']'.' changed'
+            ];
+
+            Log::create($this->log);
+        }
 
         $this->emit('saved');
     }

@@ -28,7 +28,7 @@
             @foreach ($logs as $l)
                 <tr x-data="window.__controller.dataTableController({{ $l->id }})">
                     <td>{{ $l->id }}</td>
-                    <td>{{ \Carbon\Carbon::parse($l->created_at)->format('d-m-Y h:m:s') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($l->created_at)->setTimezone('Asia/Jakarta')->format('d-m-Y H:i:s') }}</td>
                     <td>{{  \App\Models\User::whereId($l->user_id)->first()->name }}</td>
                     <td>{{ $l->access }}</td>
                     <td>{{ $l->activity }}</td>

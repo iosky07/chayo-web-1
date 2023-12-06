@@ -120,7 +120,7 @@ class CustomerForm extends Component
         $this->log = [
             'user_id' => Auth::id(),
             'access' => 'create',
-            'activity' => 'create user id '.$this->temp['id']
+            'activity' => 'create customer id '.$this->temp['id'].' in Customer table'
         ];
 
         Log::create($this->log);
@@ -162,13 +162,15 @@ class CustomerForm extends Component
 
         $changed_data = implode(', ', $changed_data);
 
-        $this->log = [
-            'user_id' => Auth::id(),
-            'access' => 'update',
-            'activity' => 'update user id '.$model_temp['id'].' ['.$changed_data.']'.' changed'
-        ];
+        if ($changed_data != '') {
+            $this->log = [
+                'user_id' => Auth::id(),
+                'access' => 'update',
+                'activity' => 'update customer id '.$model_temp['id'].' from Customer table. ['.$changed_data.']'.' changed'
+            ];
 
-        Log::create($this->log);
+            Log::create($this->log);
+        }
 
         $this->emit('swal:alert', [
             'type'    => 'success',
