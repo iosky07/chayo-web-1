@@ -34,6 +34,10 @@ class Main extends Component
         $this->sortField = $field;
     }
 
+    public function editModal() {
+        dd('tes');
+    }
+
     public function get_pagination_data ()
     {
         switch ($this->name) {
@@ -199,7 +203,7 @@ class Main extends Component
                     "logs" => $logs,
                     "data" => array_to_object([
                         'href' => [
-                            'export' => route('exportToTxt'),
+                            'export' => '#',
                             'export_text' => 'Export'
                         ]
                     ])

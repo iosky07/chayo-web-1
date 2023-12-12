@@ -1,5 +1,6 @@
 <div id="form-create" class=" card p-4">
     <form wire:submit.prevent="{{ $action }}">
+{{--        {{dd($action)}}--}}
 
         <x-input type="text" title="Nama" model="customer.name"/>
 
@@ -53,6 +54,10 @@
         <button type="submit" id="submit" class="btn btn-primary">Submit</button>
 
     </form>
+</div>
+
+<div>
+
 </div>
 
 <script>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdditionController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\OffenseController;
@@ -53,6 +54,8 @@ Route::get('update-photo',function (){
 Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verified'])->group(function() {
     Route::post('/summernote-upload',[SupportController::class,'upload'])->name('summernote_upload');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/invoices/{customerId}', [InvoiceController::class, 'generatePDF'])->name('invoice');
+    Route::get('/payment/{customerId}', [InvoiceController::class, 'payment'])->name('payment');
 //    Route::view('/dashboard', "dashboard")->name('dashboard');
 //    Route::resource('blog', BlogController::class);
     Route::middleware(['checkRole:1,2'])->group(function () {

@@ -27,15 +27,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        dd("Im Here");
-        $this->log = [
-            'user_id' => Auth::id(),
-            'access' => 'LOGIN',
-            'activity' => 'user Yoski has logged in'
-        ];
-//
-//        dd($this->log);
-//        Log::create($this->log);
         $this->registerPolicies();
 
         //

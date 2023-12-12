@@ -28,6 +28,8 @@ class CustomerForm extends Component
     public $packetTags;
     public $log;
     public $temp;
+    public $item;
+    public $editingModal = false;
 
     protected function rules() {
         if ($this->action == 'create') {
@@ -184,5 +186,12 @@ class CustomerForm extends Component
     public function render()
     {
         return view('livewire.customer-form');
+    }
+
+    public function editModal()
+    {
+        dd('tes');
+        $this->item = $item;
+        $this->editingModal = true;
     }
 }
