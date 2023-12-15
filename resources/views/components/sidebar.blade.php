@@ -39,6 +39,14 @@ if (Auth::user()->role==1) {
                 ],
 
                 [
+                    "section_text" => "Persetujuan",
+                    "section_icon" => "fa fa-users",
+                    "section_list" => [
+                        ["href" => "admin.payment.index", "text" => "Setujui Pembayaran"],
+                        ]
+                ],
+
+                [
                     "section_text" => "Log Aktifitas",
                     "section_icon" => "fa fa-users",
                     "section_list" => [

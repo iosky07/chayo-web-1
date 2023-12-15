@@ -19503,7 +19503,43 @@ function dataTableController(id) {
           Livewire.emit('addPayment', _this.id);
         }
       });
-    }
+    },
+      acceptPayment: function acceptPayment() {
+          var _this = this;
+          console.log(this);
+
+          Swal.fire({
+              title: 'Apakah kamu yakin untuk menerima pembayaran?',
+              text: "Aksi tidak bisa dikembalikan!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ya, setujui!'
+          }).then(function (result) {
+              if (result.isConfirmed) {
+                  Livewire.emit('acceptPayment', _this.id);
+              }
+          });
+      },
+      declinePayment: function declinePayment() {
+          var _this = this;
+          console.log(this);
+
+          Swal.fire({
+              title: 'Apakah kamu yakin untuk menolak pembayaran?',
+              text: "Aksi tidak bisa dikembalikan!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ya, tolak!'
+          }).then(function (result) {
+              if (result.isConfirmed) {
+                  Livewire.emit('declinePayment', _this.id);
+              }
+          });
+      }
   };
 }
 
@@ -19530,6 +19566,20 @@ function dataTableMainController() {
         } else {
           Swal.fire('Error!', result.message, 'error');
         }
+      });
+      Livewire.on('acceptPaymentResult', function (result) {
+           if (result.status) {
+               Swal.fire('Pembayaran berhasil diterima!', result.message, 'success');
+           } else {
+               Swal.fire('Error!', result.message, 'error');
+           }
+      });
+      Livewire.on('declinePaymentResult', function (result) {
+          if (result.status) {
+              Swal.fire('Pembayaran berhasil ditolak!', result.message, 'success');
+          } else {
+              Swal.fire('Error!', result.message, 'error');
+          }
       });
     }
   };

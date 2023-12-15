@@ -75,6 +75,7 @@ class CustomerForm extends Component
 //        $this->customer['registration_date'] = '2023-12-20';
         $this->packetTags = [1];
         $this->optionPacketTags = eloquent_to_options(PacketTag::get(), 'id', 'title');
+//        dd($this->optionPacketTags);
 
 
         if ($this->dataId!=''){

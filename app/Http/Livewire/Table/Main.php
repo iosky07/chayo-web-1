@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\Table;
 
 use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\Log;
+use App\Models\Payment;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -18,13 +20,14 @@ class Main extends Component
     public $model;
     public $name;
     public $customer;
+    public $payment;
 
     public $perPage = 10;
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
 
-    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment" ];
+    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment", "acceptPayment" => "accept_payment", "declinePayment" => "decline_payment" ];
 
     public function sortBy($field)
     {
@@ -229,6 +232,26 @@ class Main extends Component
                 ];
                 break;
 
+            case 'payment':
+                $payments = $this->model::search($this->search)
+                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                    ->paginate(100);
+
+                return [
+                    "view" => 'livewire.table.payment',
+                    "payments" => $payments,
+                    "data" => array_to_object([
+                        'href' => [
+                            'create_new_payment' => route('admin.payment_create_with_id', intval(substr(url()->current(), -12))),
+                            'create_new_text' => 'Buat Pembayaran Baru',
+                            'export' => '#',
+                            'export_text' => 'Export'
+                        ]
+                    ])
+                ];
+                break;
+
+
             default:
                 # code...
                 break;
@@ -328,6 +351,48 @@ class Main extends Component
         ];
 
 //        Log::create($this->log);
+
+    }
+    public function accept_payment ($id)
+    {
+        $data = $this->model::find($id);
+        $this->payment['status'] = 'accept';
+
+        $invoice = Invoice::whereCustomerId($data['customer_id'])->whereStatus('unpaid')->pluck('id')->all();
+
+        Payment::find($id)->update($this->payment);
+
+        $total_bill = Customer::find($data['customer_id']);
+
+        $this->customer['total_bill'] = $total_bill['total_bill'] - $data['nominal'];
+
+        if ($this->customer['total_bill'] <= 0) {
+            $this->customer['status'] = 'paid';
+            Invoice::whereIn('id', $invoice)->update(['status' => 'paid']);
+        }
+
+        Customer::find($data['customer_id'])->update($this->customer);
+
+        if (!$data) {
+            $this->emit("acceptPaymentResult", [
+                "status" => false,
+                "message" => "Gagal menambah data " . $this->name
+            ]);
+            return;
+        }
+
+        $this->emit("acceptPaymentResult", [
+            "status" => true,
+            "message" => "Data pembayaran " . $this->name . " berhasil diterima!"
+        ]);
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'Accept',
+            'activity' => 'Accept payment for Payment id '.$this->id.' from '.$this->name.' table.'
+        ];
+
+        Log::create($this->log);
 
     }
 

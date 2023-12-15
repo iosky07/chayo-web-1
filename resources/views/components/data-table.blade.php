@@ -10,6 +10,10 @@
                         <a href="{{ $data->href->create_new_invoice }}" class="-ml- btn btn-primary shadow-none">
                             <span class="fas fa-plus"></span> {{ $data->href->create_new_text }}
                         </a>
+                @elseif(isset($data->href->create_new_payment))
+                    <a href="{{ $data->href->create_new_payment }}" class="-ml- btn btn-primary shadow-none">
+                        <span class="fas fa-plus"></span> {{ $data->href->create_new_text }}
+                    </a>
                 @endif
                 <a href="{{ $data->href->export }}" class="ml-2 btn btn-success shadow-none">
                     <span class="fas fa-file-export"></span> {{ $data->href->export_text }}

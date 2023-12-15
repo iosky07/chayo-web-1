@@ -12,23 +12,12 @@ class InvoiceController extends Controller
 {
     public $customer;
 
-    public function index() {
-        return view('pages.invoice.index', [
-            'inv' => Invoice::class
-        ]);
-    }
-
     public function index_with_id($id)
     {
         $name = Customer::whereId($id)->value('name');
         return view('pages.invoice.index', [
             'inv' => Invoice::class
         ], compact('id', 'name'));
-    }
-
-    public function create()
-    {
-        return view('pages.invoice.create');
     }
 
     public function create_with_id($id)

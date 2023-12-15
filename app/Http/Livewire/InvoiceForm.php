@@ -47,8 +47,11 @@ class InvoiceForm extends Component
         $this->invoice['customer_id'] = $id;
 
         Invoice::create($this->invoice);
+        $invoice_amount = Invoice::whereCustomerId($id)->whereStatus('unpaid')->count();
+        $customer = Customer::findOrFail($id);
 
         $this->customer['status'] = 'unpaid';
+        $this->customer['total_bill'] = $customer['bill'] * $invoice_amount;
 
         Customer::find($id)->update($this->customer);
 

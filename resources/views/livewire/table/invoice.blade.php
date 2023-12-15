@@ -4,18 +4,9 @@
 {{--        {{ $customer_invoices = \App\Models\Invoice::whereCustomerId($getId)->get() }}--}}
         <x-slot name="head">
             <tr>
-                <th><a wire:click.prevent="sortBy('id')" role="button" href="#">
-                    Invoice ID
-                    @include('components.sort-icon', ['field' => 'id'])
-                </a></th>
-                <th><a wire:click.prevent="sortBy('selected_date')" role="button" href="#">
-                    Bulan
-                    @include('components.sort-icon', ['field' => 'selected_date'])
-                </a></th>
-                <th><a wire:click.prevent="sortBy('status')" role="button" href="#">
-                        Status
-                        @include('components.sort-icon', ['field' => 'status'])
-                    </a></th>
+                <th>Invoice ID</th>
+                <th>Bulan</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </x-slot>

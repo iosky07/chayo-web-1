@@ -51,10 +51,10 @@
                     <td>
 {{--                        <img src="{{ asset('storage/img/location_picture/'.$m->location_picture) }}" alt=""--}}
 {{--                             style="width: 100px"></td>--}}{{--                        {{ dd($m->bill) }}--}}
-                        @if(($m->bill * \App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count()) == 0)
+                        @if($m->total_bill  == 0)
                             -
-                        @elseif(($m->bill * \App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count()) > 0)
-                            {{ $m->bill * \App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count() }} ({{\App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count()}})
+                        @elseif($m->total_bill > 0)
+                            Rp. {{ number_format($m->total_bill, 0, ',', '.') }} ({{\App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count()}})
                         @endif
 
                     <td>
@@ -78,7 +78,7 @@
                     </td>
                     <td>
                         <a class="btn btn-success trigger--fire-modal-5" href="{{ route('admin.index_with_id', $m->id) }}">Invoice</a>
-                        <a class="btn btn-primary trigger--fire-modal-5" x-on:click.prevent="addPayment" href="#">Bayar</a>
+                        <a class="btn btn-primary trigger--fire-modal-5" href="{{ route('admin.payment_index_with_id', $m->id) }}">Bayar</a>
                     </td>
                 </tr>
             @endforeach
