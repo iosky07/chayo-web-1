@@ -56,18 +56,14 @@ Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verif
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/invoices/{customerId}', [InvoiceController::class, 'generatePDF'])->name('invoice');
     Route::get('/payment/{customerId}', [InvoiceController::class, 'payment'])->name('payment');
-//    Route::view('/dashboard', "dashboard")->name('dashboard');
-//    Route::resource('blog', BlogController::class);
     Route::middleware(['checkRole:1,2'])->group(function () {
         Route::resource('member', MemberController::class);
     });
-    Route::resource('student', StudentController::class);
-    Route::resource('student-detail', StudentDetailController::class);
-//    Route::post('student-detail/{id}', [StudentDetailController::class, 'update'])->name('student.update');
-//    Route::post('student-detail/{id}', [StudentDetailController::class, 'destroy'])->name('student.destroy');
-    Route::resource('offense', OffenseController::class);
-    Route::resource('addition', AdditionController::class);
     Route::resource('customer', CustomerController::class);
+    Route::get('/invoice/index/{customerId}', [InvoiceController::class, 'index_with_id'])->name('index_with_id');
+    Route::get('/invoice/create/{customerId}', [InvoiceController::class, 'create_with_id'])->name('create_with_id');
+    Route::get('/generate-invoice/{invoiceId}', [InvoiceController::class, 'generate_invoice'])->name('generate_invoice');
+    Route::resource('invoice', InvoiceController::class);
     Route::resource('packet-tag', PacketTagController::class);
     Route::resource('log', LogController::class);
 //    Route::resource('exportToTxt', ExportController::class);

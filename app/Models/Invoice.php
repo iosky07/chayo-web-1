@@ -11,5 +11,11 @@ class Invoice extends Model
 
     protected $keyType = 'integer';
 
-    protected $fillable = ['file_name', 'customer_id', 'created_at', 'updated_at'];
+    protected $fillable = ['file_name', 'selected_date', 'customer_id', 'status', 'created_at', 'updated_at'];
+
+    public static function search($query)
+    {
+        return empty($query) ? static::query()
+            : static::where('name', 'like', '%'.$query.'%');
+    }
 }

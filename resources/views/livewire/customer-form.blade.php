@@ -16,7 +16,7 @@
 
         <x-input type="text" title="Latitude" model="customer.latitude"/>
 
-        <x-date type="datetimepicker" title="Tanggal Registrasi" model="customer.created_at"/>
+        <x-date type="datetimepicker" title="Tanggal Registrasi" model="customer.registration_date"/>
 
         <x-input type="file" title="Foto KTP" model="identity_picture"/>
         <div wire:loading wire:target="identity_picture">

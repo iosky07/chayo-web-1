@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Invoice;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
@@ -11,18 +12,45 @@ class InvoiceController extends Controller
 {
     public $customer;
 
-    public function generatePDF($customerId)
+    public function index() {
+        return view('pages.invoice.index', [
+            'inv' => Invoice::class
+        ]);
+    }
+
+    public function index_with_id($id)
     {
-        $customer = Customer::findOrFail($customerId);
-        $date = Carbon::now();
-        $amount = $customer['amount'] + 1;
-        $this->customer['amount'] = $amount;
-        $this->customer['total_bill'] = $customer['bill'] * $amount;
-        Customer::find($customerId)->update($this->customer);
+        $name = Customer::whereId($id)->value('name');
+        return view('pages.invoice.index', [
+            'inv' => Invoice::class
+        ], compact('id', 'name'));
+    }
+
+    public function create()
+    {
+        return view('pages.invoice.create');
+    }
+
+    public function create_with_id($id)
+    {
+        return view('pages.invoice.create', compact('id'));
+    }
+
+    public function edit($id)
+    {
+        return view('pages.invoice.edit', compact('id'));
+    }
+
+    public function generate_invoice($invoiceId)
+    {
+        $getUrl = url()->previous();
+        $id = intval(substr($getUrl, -12));
+        $customer = Customer::findOrFail($id);
+        $invoice = Invoice::findOrFail($invoiceId);
 
         $pdf = Pdf::loadView('invoices.invoice', compact('customer'));
 
-        return $pdf->download('invoice-'.$customer['name'].'-'.$date.'.pdf');
+        return $pdf->stream('invoice-'.$customer['name'].'-'.$invoice['selected_date'].'.pdf');
     }
 
     public function payment($customerId)

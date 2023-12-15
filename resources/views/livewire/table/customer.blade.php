@@ -1,5 +1,7 @@
 <div>
     <x-data-table :data="$data" :model="$customers">
+{{--        {{ dd($customers) }}--}}
+{{--        {{ $unpaid = \App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count() }}--}}
         <x-slot name="head">
             <tr>
                 <th><a wire:click.prevent="sortBy('id')" role="button" href="#">
@@ -48,12 +50,11 @@
                     <td>{{ $m->address }}</td>
                     <td>
 {{--                        <img src="{{ asset('storage/img/location_picture/'.$m->location_picture) }}" alt=""--}}
-{{--                             style="width: 100px"></td>--}}
-                        @if(($m->bill * $m->amount) == 0)
+{{--                             style="width: 100px"></td>--}}{{--                        {{ dd($m->bill) }}--}}
+                        @if(($m->bill * \App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count()) == 0)
                             -
-                        @endif
-                        @if(($m->bill * $m->amount) > 0)
-                            {{ $m->bill * $m->amount }} ({{$m->amount}})
+                        @elseif(($m->bill * \App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count()) > 0)
+                            {{ $m->bill * \App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count() }} ({{\App\Models\Invoice::whereCustomerId($m->id)->whereStatus('unpaid')->count()}})
                         @endif
 
                     <td>
@@ -63,38 +64,24 @@
                         </iframe>
                     </td>
 
-                    <td class="whitespace-no-wrap row-action--icon">
-                        {{--                        <a role="button" href="https://maps.google.com/maps?q={{$m->latitude}},{{$m->longitude}}&output=embed" class="mr-3" target="_blank"><i class="fa fa-16px fa-map text-green-500"></i></a>--}}
-                        <a role="button" href="https://wa.me/{{'62'.substr($m->phone_number, 1)}}" class="mr-3"
-                           target="_blank"><i class="fa fa-16px fa-phone text-green-500"></i></a>
-                        <a role="button" href="{{route('admin.customer.edit', $m->id)}}" class="mr-3"><i
-                                class="fa fa-16px fa-pen"></i></a>
-                        <a role="button" x-on:click.prevent="deleteItem" href="#" class="mr-3"><i
-                                class="fa fa-16px fa-trash text-red-500"></i></a>
-                        {{--                        <a role="button" href="{{route('admin.student-detail.edit', $m->id)}}">edit-1<i class="fa fa-16px fa-user"></i></a>--}}
+                    <td>
+                        <ul class="navbar-nav navbar-right">
+                            <li class="dropdown"><a href="#" data-turbolinks="false" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                                    <div class="d-sm-none d-lg-inline-block"><i class="fa fa-16px fa-user"></i></div></a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="https://wa.me/{{'62'.substr($m->phone_number, 1)}}" class="dropdown-item has-icon" target="_blank"><i class="fa fa-16px fa-phone"> </i> Whatsapp</a>
+                                    <a href="{{route('admin.customer.edit', $m->id)}}" class="dropdown-item has-icon"><i class="fa fa-16px fa-pen"></i> Edit</a>
+                                    <a x-on:click.prevent="deleteItem" href="#" class="dropdown-item has-icon"><i class="fa fa-16px fa-trash"></i> Hapus</a>
+                                </div>
+                            </li>
+                        </ul>
                     </td>
                     <td>
-                        <a class="btn btn-success trigger--fire-modal-5" id="modal-5" href="{{route('admin.invoice', $m->id)}}">Tambah</a>
-                        <a class="btn btn-primary trigger--fire-modal-5" id="modal-5" href="{{route('admin.payment', $m->id)}}">Bayar</a>
-{{--                        <button wire.click="editModal()">--}}
-{{--                            Bayar--}}
-{{--                        </button>--}}
+                        <a class="btn btn-success trigger--fire-modal-5" href="{{ route('admin.index_with_id', $m->id) }}">Invoice</a>
+                        <a class="btn btn-primary trigger--fire-modal-5" x-on:click.prevent="addPayment" href="#">Bayar</a>
                     </td>
                 </tr>
             @endforeach
         </x-slot>
     </x-data-table>
-{{--    <x-jet-dialog-modal wire.model="editingModal">--}}
-{{--        <x-slot name="title">--}}
-{{--            BAYARANEEE--}}
-{{--        </x-slot>--}}
-
-{{--        <x-slot name="content">--}}
-{{--            THIS IS CONTENT--}}
-{{--        </x-slot>--}}
-
-{{--        <x-slot name="footer">--}}
-{{--            INI FOOTERNYA--}}
-{{--        </x-slot>--}}
-{{--    </x-jet-dialog-modal>--}}
 </div>

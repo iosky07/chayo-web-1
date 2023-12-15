@@ -72,7 +72,6 @@ class CustomerForm extends Component
     public function mount()
     {
         $this->customer['packet_tag_id'] = 1;
-        $this->customer['created_at'] = '';
 //        $this->customer['registration_date'] = '2023-12-20';
         $this->packetTags = [1];
         $this->optionPacketTags = eloquent_to_options(PacketTag::get(), 'id', 'title');
@@ -93,7 +92,6 @@ class CustomerForm extends Component
                 'identity_number'=>$c->identity_number,
                 'packet_tag_id'=>$c->packet_tag_id,
                 'registration_date'=>$c->registration_date,
-                'created_at'=>$c->created_at,
             ];
 
 
@@ -103,7 +101,9 @@ class CustomerForm extends Component
 
     public function create()
     {
+//        dd($this->customer);
         $this->validate();
+        $this->customer['id'] = Customer::latest('id')->value('id') + 1;
 
         $this->customer['identity_picture'] = md5(rand()).'.'.$this->identity_picture->getClientOriginalExtension();
         $this->identity_picture->storeAs('public/img/identity_picture/', $this->customer['identity_picture']);
@@ -138,6 +138,7 @@ class CustomerForm extends Component
 
     public function update() {
 
+//        dd($this->customer);
         $this->validate();
 
         $changed_data = [];
