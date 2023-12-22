@@ -72,7 +72,7 @@ class PaymentForm extends Component
 
         if (empty($this->payment['nominal'])) {
             $bill = Customer::FindOrFail($id);
-            $invoice = Invoice::whereCustomerId($id)->count();
+            $invoice = Invoice::whereCustomerId($id)->whereStatus('unpaid')->count();
             $this->payment['nominal'] = $bill['bill'] * $invoice;
         }
 //        dd($this->payment);

@@ -46,6 +46,10 @@
                                 <td>
                                     <a disabled="yes" x-on:click.prevent="deleteItem" href="#" class="btn btn-danger"><i class="fa fa-16px fa-trash"></i> Hapus</a>
                                 </td>
+                            @elseif($p->status == 'accept')
+                                <td>
+                                    <a role="button" href="{{ route('admin.generate_payment', $p->id) }}" class="btn btn-success" target="_blank"><i class="fa fa-16px fa-print"></i> Cetak</a>
+                                </td>
                             @else
                                 <td>-</td>
                             @endif

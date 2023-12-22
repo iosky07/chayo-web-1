@@ -1,107 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Aloha!</title>
-
-    <style type="text/css">
-        * {
-            font-family: Verdana, Arial, sans-serif;
-        }
-        table{
-            font-size: x-small;
-        }
-        tfoot tr td{
-            font-weight: bold;
-            font-size: x-small;
-        }
-        .gray {
-            background-color: lightgray
-        }
-    </style>
-
+    <meta charset="utf-8">
+    <title>invoice-{{strtolower($customer['name'])}}-{{str_replace(' ', '-', strtolower($formattedDate))}}</title>
+    <link rel="stylesheet" href="invoice-assets-2/style.css" media="all" />
 </head>
 <body>
-
-<table width="100%">
-    <tr>
-        <td valign="top"><img src="https://via.placeholder.com/150" alt="" width="150"/></td>
-        <td align="right">
-            <h3>Shinra Electric power company</h3>
-            <pre>
-                Company representative name
-                Company address
-                Tax ID
-                phone
-                fax
-            </pre>
-        </td>
-    </tr>
-
-</table>
-
-<table width="100%">
-    <tr>
-        <td><strong>From:</strong> Linblum - Barrio teatral</td>
-        <td><strong>To:</strong> Linblum - Barrio Comercial</td>
-    </tr>
-
-</table>
-
-<br/>
-
-<table width="100%">
-    <thead style="background-color: lightgray;">
-    <tr>
-        <th>#</th>
-        <th>Description</th>
-        <th>Quantity</th>
-        <th>Unit Price $</th>
-        <th>Total $</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>Playstation IV - Black</td>
-        <td align="right">1</td>
-        <td align="right">1400.00</td>
-        <td align="right">1400.00</td>
-    </tr>
-    <tr>
-        <th scope="row">1</th>
-        <td>Metal Gear Solid - Phantom</td>
-        <td align="right">1</td>
-        <td align="right">105.00</td>
-        <td align="right">105.00</td>
-    </tr>
-    <tr>
-        <th scope="row">1</th>
-        <td>Final Fantasy XV - Game</td>
-        <td align="right">1</td>
-        <td align="right">130.00</td>
-        <td align="right">130.00</td>
-    </tr>
-    </tbody>
-
-    <tfoot>
-    <tr>
-        <td colspan="3"></td>
-        <td align="right">Subtotal $</td>
-        <td align="right">1635.00</td>
-    </tr>
-    <tr>
-        <td colspan="3"></td>
-        <td align="right">Tax $</td>
-        <td align="right">294.3</td>
-    </tr>
-    <tr>
-        <td colspan="3"></td>
-        <td align="right">Total $</td>
-        <td align="right" class="gray">$ 1929.3</td>
-    </tr>
-    </tfoot>
-</table>
-
+<header class="clearfix">
+    <div id="logo">
+        <img src="invoice-assets-2/main-logo.png">
+    </div>
+    <h1>invoice-{{strtolower($customer['name'])}}-{{str_replace(' ', '-', strtolower($formattedDate))}}</h1>
+    <div id="company" class="clearfix">
+        <div>Chayo Anugrah Teknologi</div>
+        <div>455 Foggy Heights,<br /> AZ 85004, US</div>
+        <div>(602) 519-0450</div>
+        <div><a href="mailto:company@example.com">company@example.com</a></div>
+    </div>
+    <div id="project">
+        <div><span>PROJECT</span> Tagihan wifi</div>
+        <div><span>CLIENT</span> {{ $customer['name'] }}</div>
+        <div><span>ADDRESS</span> {{ $customer['address'] }}</div>
+        <div><span>DATE</span> {{ $formattedDate }}</div>
+        <div><span>DUE DATE</span> {{ $formattedDate }}</div>
+    </div>
+</header>
+<main>
+    <table>
+        <thead>
+        <tr>
+            <th class="service">SERVICE</th>
+            <th class="desc">DESCRIPTION</th>
+            <th>PRICE</th>
+            <th>QTY</th>
+            <th>TOTAL</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="service">Design</td>
+            <td class="desc">Creating a recognizable design solution based on the company's existing visual identity</td>
+            <td class="unit">$40.00</td>
+            <td class="qty">26</td>
+            <td class="total">$1,040.00</td>
+        </tr>
+        <tr>
+            <td class="service">Development</td>
+            <td class="desc">Developing a Content Management System-based Website</td>
+            <td class="unit">$40.00</td>
+            <td class="qty">80</td>
+            <td class="total">$3,200.00</td>
+        </tr>
+        <tr>
+            <td class="service">SEO</td>
+            <td class="desc">Optimize the site for search engines (SEO)</td>
+            <td class="unit">$40.00</td>
+            <td class="qty">20</td>
+            <td class="total">$800.00</td>
+        </tr>
+        <tr>
+            <td class="service">Training</td>
+            <td class="desc">Initial training sessions for staff responsible for uploading web content</td>
+            <td class="unit">$40.00</td>
+            <td class="qty">4</td>
+            <td class="total">$160.00</td>
+        </tr>
+        <tr>
+            <td colspan="4">SUBTOTAL</td>
+            <td class="total">$5,200.00</td>
+        </tr>
+        <tr>
+            <td colspan="4">TAX 25%</td>
+            <td class="total">$1,300.00</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="grand total">GRAND TOTAL</td>
+            <td class="grand total">$6,500.00</td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="notices">
+        <div>NOTICE:</div>
+        <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+    </div>
+</main>
+<footer>
+    Invoice was created on a computer and is valid without the signature and seal.
+</footer>
 </body>
 </html>

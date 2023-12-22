@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Payment;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use DateTime;
 
 class PaymentController extends Controller
 {
@@ -34,5 +37,22 @@ class PaymentController extends Controller
     public function edit($id)
     {
         return view('pages.payment.edit', compact('id'));
+    }
+
+    public function generate_payment($paymentId)
+    {
+        $getUrl = url()->previous();
+        $id = intval(substr($getUrl, -12));
+        $customer = Customer::findOrFail($id);
+        $payment = Payment::findOrFail($paymentId);
+
+        $dateString = $payment['updated_at'];
+        $dateTime = new DateTime($dateString);
+
+        $formattedDate = $dateTime->format('F Y');
+
+        $pdf = Pdf::loadView('invoices.invoice', compact('customer', 'id', 'payment', 'formattedDate'));
+
+        return $pdf->stream('receipt-'.strtolower($customer['name']).'-'.str_replace(' ', '-', strtolower($formattedDate)).'.pdf');
     }
 }

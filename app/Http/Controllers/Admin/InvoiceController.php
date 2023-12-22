@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use DateTime;
 
 class InvoiceController extends Controller
 {
@@ -37,9 +38,14 @@ class InvoiceController extends Controller
         $customer = Customer::findOrFail($id);
         $invoice = Invoice::findOrFail($invoiceId);
 
-        $pdf = Pdf::loadView('invoices.invoice', compact('customer'));
+        $dateString = $invoice['selected_date'];
+        $dateTime = new DateTime($dateString);
 
-        return $pdf->stream('invoice-'.$customer['name'].'-'.$invoice['selected_date'].'.pdf');
+        $formattedDate = $dateTime->format('F Y');
+
+        $pdf = Pdf::loadView('invoices.invoice', compact('customer', 'id', 'invoice', 'formattedDate'));
+
+        return $pdf->stream('invoice-'.strtolower($customer['name']).'-'.str_replace(' ', '-', strtolower($formattedDate)).'.pdf');
     }
 
     public function payment($customerId)

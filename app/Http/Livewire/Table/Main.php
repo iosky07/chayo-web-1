@@ -260,8 +260,8 @@ class Main extends Component
 
     public function delete_item ($id)
     {
-//        dd($this->name);
         $data = $this->model::find($id);
+//        dd($data['customer_id']);
 
         if (!$data) {
             $this->emit("deleteResult", [
@@ -286,6 +286,21 @@ class Main extends Component
         Log::create($this->log);
 
         if ($this->name == 'invoice') {
+            $validation = Invoice::whereCustomerId($data['customer_id'])->whereStatus('unpaid')->count();
+            $customer = Customer::findOrFail($data['customer_id']);
+
+            if ($validation == 0) {
+                $this->customer['total_bill'] = 0;
+                $this->customer['status'] = 'paid';
+            } else {
+                $this->customer['total_bill'] = $customer['total_bill'] - $customer['bill'];
+            }
+            Customer::find($data['customer_id'])->update($this->customer);
+
+            sleep(2);
+            return redirect(url()->previous());
+        } else if ($this->name == 'payment') {
+            sleep(2);
             return redirect(url()->previous());
         }
 
@@ -390,6 +405,36 @@ class Main extends Component
             'user_id' => Auth::id(),
             'access' => 'Accept',
             'activity' => 'Accept payment for Payment id '.$this->id.' from '.$this->name.' table.'
+        ];
+
+        Log::create($this->log);
+
+    }
+
+    public function decline_payment ($id)
+    {
+        $data = $this->model::find($id);
+        $this->payment['status'] = 'decline';
+
+        Payment::find($id)->update($this->payment);
+
+        if (!$data) {
+            $this->emit("declinePaymentResult", [
+                "status" => false,
+                "message" => "Gagal menambah data " . $this->name
+            ]);
+            return;
+        }
+
+        $this->emit("declinePaymentResult", [
+            "status" => true,
+            "message" => "Data pembayaran " . $this->name . " berhasil ditolak!"
+        ]);
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'Decline',
+            'activity' => 'Decline payment for Payment id '.$this->id.' from '.$this->name.' table.'
         ];
 
         Log::create($this->log);

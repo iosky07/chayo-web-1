@@ -66,6 +66,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verif
     Route::get('/invoice/create/{customerId}', [InvoiceController::class, 'create_with_id'])->name('create_with_id');
     Route::get('/payment/create/{customerId}', [PaymentController::class, 'payment_create_with_id'])->name('payment_create_with_id');
     Route::get('/generate-invoice/{invoiceId}', [InvoiceController::class, 'generate_invoice'])->name('generate_invoice');
+    Route::get('/generate-payment/{paymentId}', [PaymentController::class, 'generate_payment'])->name('generate_payment');
     Route::resource('invoice', InvoiceController::class);
     Route::resource('payment', PaymentController::class);
     Route::resource('packet-tag', PacketTagController::class);
