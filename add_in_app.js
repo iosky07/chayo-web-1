@@ -88,6 +88,24 @@ function dataTableController(id) {
                     Livewire.emit('declinePayment', _this.id);
                 }
             });
+        },
+        customerSuspend: function customerSuspend() {
+            var _this = this;
+            console.log(this);
+
+            Swal.fire({
+                title: 'Apakah kamu yakin untuk suspend pelanggan?',
+                text: "Aksi tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, suspend!'
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    Livewire.emit('customerSuspend', _this.id);
+                }
+            });
         }
     };
 }
@@ -126,6 +144,13 @@ function dataTableMainController() {
             Livewire.on('declinePaymentResult', function (result) {
                 if (result.status) {
                     Swal.fire('Pembayaran berhasil ditolak!', result.message, 'success');
+                } else {
+                    Swal.fire('Error!', result.message, 'error');
+                }
+            });
+            Livewire.on('customerSuspendResult', function (result) {
+                if (result.status) {
+                    Swal.fire('Pelanggan berhasil suspend!', result.message, 'success');
                 } else {
                     Swal.fire('Error!', result.message, 'error');
                 }

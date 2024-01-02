@@ -108,6 +108,7 @@
         <script src="{{ asset('stisla/js/stisla.js') }}"></script>
         <script src="{{ asset('stisla/js/scripts.js') }}"></script>
         <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+        <script src="{{ asset('stisla/js/index.js') }}"></script>
         {{--<livewire:scripts/>--}}
 
         <script>

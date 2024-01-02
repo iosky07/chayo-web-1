@@ -28,43 +28,59 @@ class CustomerController extends Controller
 
         $customers = Customer::all();
 
-        if ($daysDifference > 20) {
+        if ($daysDifference > $daysInLastMonth) {
             foreach ($customers as $customer) {
-                Carbon::setLocale('id');
+                if ($customer['status'] != 'suspend') {
+                    Carbon::setLocale('id');
 
-                try {
-                    $last_invoice_date = Invoice::whereCustomerId($customer['id'])->latest()->first();
-                    $last_invoice_date = Carbon::parse($last_invoice_date['selected_date']);
-                    $invoice_month = $last_invoice_date->format('m');
-                    $invoice_year = $last_invoice_date->format('Y');
-                    $data_null = False;
-                } catch (\Exception $e) {
-                    $data_null = True;
-                }
+                    try {
+                        $last_invoice_date = Invoice::whereCustomerId($customer['id'])->latest()->first();
+                        $last_invoice_date = Carbon::parse($last_invoice_date['selected_date']);
+                        $invoice_month = $last_invoice_date->format('m');
+                        $invoice_year = $last_invoice_date->format('Y');
+                        $data_null = False;
+                    } catch (\Exception $e) {
+                        $data_null = True;
+                    }
 
-                $current_date = Carbon::now();
-                $current_month = $current_date->format('m');
-                $current_year = $current_date->format('Y');
-                if ($data_null) {
+                    $current_date = Carbon::now();
+                    $current_month = $current_date->format('m');
+                    $current_year = $current_date->format('Y');
+                    if ($data_null) {
 
-                    $id = $customer['id'];
+                        $id = $customer['id'];
 
-                    $this->invoice['selected_date'] = $current_date;
-                    $this->invoice['customer_id'] = $id;
+                        $this->invoice['selected_date'] = $current_date;
+                        $this->invoice['customer_id'] = $id;
 
-                    Invoice::create($this->invoice);
-                    $invoice_amount = Invoice::whereCustomerId($id)->whereStatus('unpaid')->count();
-                    $customer = Customer::findOrFail($id);
+                        Invoice::create($this->invoice);
+                        $invoice_amount = Invoice::whereCustomerId($id)->whereStatus('unpaid')->count();
+                        $customer = Customer::findOrFail($id);
 
-                    $this->customer['status'] = 'unpaid';
-                    $this->customer['total_bill'] = $customer['bill'] * $invoice_amount;
+                        $this->customer['status'] = 'unpaid';
+                        $this->customer['total_bill'] = $customer['bill'] * $invoice_amount;
 
-                    Customer::find($id)->update($this->customer);
-                } else {
-                    if ($current_year == $invoice_year) {
-                        if ($current_month > $invoice_month) {
-                            dd('tengah'.$customer['id']);
+                        Customer::find($id)->update($this->customer);
+                    } else {
+                        if ($current_year == $invoice_year) {
+                            if ($current_month > $invoice_month) {
+                                dd('tengah'.$customer['id']);
 
+                                $id = $customer['id'];
+
+                                $this->invoice['selected_date'] = $current_date;
+                                $this->invoice['customer_id'] = $id;
+
+                                Invoice::create($this->invoice);
+                                $invoice_amount = Invoice::whereCustomerId($id)->whereStatus('unpaid')->count();
+                                $customer = Customer::findOrFail($id);
+
+                                $this->customer['status'] = 'unpaid';
+                                $this->customer['total_bill'] = $customer['bill'] * $invoice_amount;
+
+                                Customer::find($id)->update($this->customer);
+                            }
+                        } elseif ($current_year > $invoice_year) {
                             $id = $customer['id'];
 
                             $this->invoice['selected_date'] = $current_date;
@@ -79,23 +95,9 @@ class CustomerController extends Controller
 
                             Customer::find($id)->update($this->customer);
                         }
-                    } elseif ($current_year > $invoice_year) {
-                        dd('bawah'.$customer['id']);
-                        $id = $customer['id'];
-
-                        $this->invoice['selected_date'] = $current_date;
-                        $this->invoice['customer_id'] = $id;
-
-                        Invoice::create($this->invoice);
-                        $invoice_amount = Invoice::whereCustomerId($id)->whereStatus('unpaid')->count();
-                        $customer = Customer::findOrFail($id);
-
-                        $this->customer['status'] = 'unpaid';
-                        $this->customer['total_bill'] = $customer['bill'] * $invoice_amount;
-
-                        Customer::find($id)->update($this->customer);
                     }
                 }
+
             }
 //            $current_date = Carbon::parse("2024-01-12 00:00:00");
             $this->date_month['save_date_per_month'] = $current_date->firstOfMonth();

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\RouterosAPI;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -67,6 +70,27 @@ class DashboardController extends Controller
 ////        return response()->download($filePath)->deleteFileAfterSend(true);
 //
 ////        dd('berhasil');
-        return view('dashboard');
+
+        $customer = Customer::all()->count();
+        $sum_total_bill = Customer::sum('total_bill');
+
+        $month_total_bill = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $results = Invoice::whereMonth('selected_date', $month)->whereStatus('unpaid')->get();
+            $result_count = Invoice::whereMonth('selected_date', $month)->whereStatus('unpaid')->count();
+
+            $month_bill = 0;
+            for ($bill = 0; $bill <= ($result_count-1); $bill++) {
+                $month_bill = $month_bill + Customer::whereId($results[$bill]['customer_id'])->pluck('bill')[0];
+            }
+            $month_total_bill[] = $month_bill;
+        }
+
+        $temp = $month_total_bill;
+        $this_month = $month_total_bill[Carbon::now()->month - 1];
+        unset($temp[Carbon::now()->month - 1]);
+        $prev_months = array_sum($temp);
+
+        return view('dashboard', compact('customer', 'sum_total_bill', 'month_total_bill', 'this_month', 'prev_months'));
     }
 }

@@ -27,7 +27,7 @@ class Main extends Component
     public $sortAsc = false;
     public $search = '';
 
-    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment", "acceptPayment" => "accept_payment", "declinePayment" => "decline_payment" ];
+    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment", "acceptPayment" => "accept_payment", "declinePayment" => "decline_payment", "customerSuspend" => "customer_suspend" ];
 
     public function sortBy($field)
     {
@@ -436,6 +436,61 @@ class Main extends Component
             'access' => 'Decline',
             'activity' => 'Decline payment for Payment id '.$this->id.' from '.$this->name.' table.'
         ];
+
+        Log::create($this->log);
+
+    }
+
+    public function customer_suspend ($id)
+    {
+        $data = $this->model::find($id);
+
+        if ($data['status'] == 'suspend') {
+            $invoice = Invoice::whereCustomerId($data['id'])->whereStatus('unpaid')->count();
+
+            if ($invoice == 0){
+                $this->customer['status'] = 'paid';
+            } else {
+                $this->customer['status'] = 'unpaid';
+            }
+
+        } else {
+            $this->customer['status'] = 'suspend';
+        }
+
+        Customer::find($id)->update($this->customer);
+
+        if (!$data) {
+            $this->emit("customerSuspendResult", [
+                "status" => false,
+                "message" => "Gagal menambah data " . $this->name
+            ]);
+            return;
+        }
+
+        if ($data['status'] == 'suspend') {
+            $this->emit("customerSuspendResult", [
+                "status" => true,
+                "message" => "Pelanggan " . $this->name . " berhasil unsuspend!"
+            ]);
+
+            $this->log = [
+                'user_id' => Auth::id(),
+                'access' => 'Unsuspend',
+                'activity' => 'Unsuspend customer id '.$data['id'].' from '.$this->name.' table.'
+            ];
+        } else {
+            $this->emit("customerSuspendResult", [
+                "status" => true,
+                "message" => "Pelanggan " . $this->name . " berhasil disuspend!"
+            ]);
+
+            $this->log = [
+                'user_id' => Auth::id(),
+                'access' => 'Suspend',
+                'activity' => 'Suspend customer id '.$data['id'].' from '.$this->name.' table.'
+            ];
+        }
 
         Log::create($this->log);
 

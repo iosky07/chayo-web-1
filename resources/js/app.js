@@ -4,7 +4,6 @@ function dataTableController (id) {
     return {
         id,
         deleteItem() {
-            print('Ini masuk JS')
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",

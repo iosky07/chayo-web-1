@@ -11,81 +11,84 @@
         <img src="invoice-assets-2/main-logo.png">
     </div>
     <h1>invoice-{{strtolower($customer['name'])}}-{{str_replace(' ', '-', strtolower($formattedDate))}}</h1>
+
     <div id="company" class="clearfix">
-        <div>Chayo Anugrah Teknologi</div>
-        <div>455 Foggy Heights,<br /> AZ 85004, US</div>
-        <div>(602) 519-0450</div>
-        <div><a href="mailto:company@example.com">company@example.com</a></div>
+        <div>TAGIHAN <span style="padding-left: 38px">:</span> 01 {{ $formattedDate }}</div>
+        <div>JATUH TEMPO : 15 {{ $formattedDate }}</div>
     </div>
-    <div id="project">
-        <div><span>PROJECT</span> Tagihan wifi</div>
-        <div><span>CLIENT</span> {{ $customer['name'] }}</div>
-        <div><span>ADDRESS</span> {{ $customer['address'] }}</div>
-        <div><span>DATE</span> {{ $formattedDate }}</div>
-        <div><span>DUE DATE</span> {{ $formattedDate }}</div>
+    <div style="font-size: 15px">
+        <div>KEPADA <span style="padding-left: 12px">:</span> {{ $customer['name'] }}</div>
+        <div>NO. HP <span style="padding-left: 22px">:</span> {{ $customer['phone_number'] }}</div>
+        <div>ALAMAT <span style="padding-left: 14px">:</span> {{ $customer['address'] }}</div>
     </div>
 </header>
 <main>
     <table>
         <thead>
         <tr>
-            <th class="service">SERVICE</th>
-            <th class="desc">DESCRIPTION</th>
-            <th>PRICE</th>
+            <th>NO</th>
+            <th>DESKRIPSI</th>
+            <th>HARGA</th>
             <th>QTY</th>
             <th>TOTAL</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td class="service">Design</td>
-            <td class="desc">Creating a recognizable design solution based on the company's existing visual identity</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">26</td>
-            <td class="total">$1,040.00</td>
+            <td class="qty">1</td>
+            <td class="desc">Tagihan Wifi {{ $formattedDate }}</td>
+            <td class="unit">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
+            <td class="qty">1</td>
+            <td class="total">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
         </tr>
-        <tr>
-            <td class="service">Development</td>
-            <td class="desc">Developing a Content Management System-based Website</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">80</td>
-            <td class="total">$3,200.00</td>
-        </tr>
-        <tr>
-            <td class="service">SEO</td>
-            <td class="desc">Optimize the site for search engines (SEO)</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">20</td>
-            <td class="total">$800.00</td>
-        </tr>
-        <tr>
-            <td class="service">Training</td>
-            <td class="desc">Initial training sessions for staff responsible for uploading web content</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">4</td>
-            <td class="total">$160.00</td>
-        </tr>
-        <tr>
-            <td colspan="4">SUBTOTAL</td>
-            <td class="total">$5,200.00</td>
-        </tr>
-        <tr>
-            <td colspan="4">TAX 25%</td>
-            <td class="total">$1,300.00</td>
-        </tr>
+{{--        <tr>--}}
+{{--            <td colspan="4">SUBTOTAL</td>--}}
+{{--            <td class="total">$5,200.00</td>--}}
+{{--        </tr>--}}
+{{--        <tr>--}}
+{{--            <td colspan="4">TAX 25%</td>--}}
+{{--            <td class="total">$1,300.00</td>--}}
+{{--        </tr>--}}
         <tr>
             <td colspan="4" class="grand total">GRAND TOTAL</td>
-            <td class="grand total">$6,500.00</td>
+            <td class="grand total">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
         </tr>
         </tbody>
     </table>
+    <br>
+    <div id="company">
+        <div><b>PT. Chayo Anugrah Teknologi</b></div>
+        <div id="ttd">
+            <img src="invoice-assets-2/ttd-nardi.jpg">
+        </div>
+        <div style="margin-right: 80px"><b>Nardi</b></div>
+        <div style="margin-right: 35px">Bagian Keuangan</div>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br>
+
     <div id="notices">
-        <div>NOTICE:</div>
-        <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+        <div><b>Silahkan transfer ke:</b></div>
+        <ul>
+            <li>Bank BCA a/n CHAYO ANUGRAH TEKNOLOGI, No. rek : 1470717854</li>
+            <li>Bank BRI a/n PT. CHAYO ANUGRAH TEKNOLOGI, No. rek : 002101003850303</li>
+            <li>Bank Mandiri a/n PT. CHAYO ANUGRAH TEKNOLOGI, No. rek : 1430025439991</li>
+        </ul>
+        <div><b>Perhatian:</b></div>
+        <ul>
+            <li>Pembayaran dianggap sah apabila dana sudah masuk ke rekening kami, dan bukti setor pembayaran telah kami terima.</li>
+            <li>Untuk kelancaran pelayanan, harap membayar invoice tepat pada waktunya.</li>
+            <li>Pembayaran yang melewati batas tempo yang telah ditentukan, akan dikenakan sanksi denda 2% dari total tagihan invoice yang belum terbayarkan.</li>
+        </ul>
+    </div>
+    <br><br><br><br>
+    <div id="company" class="clearfix">
+        <div><b>PT. Chayo Anugrah Teknologi</b></div>
+        <div>Jln. Hasanuddin, Dsn. Krajan B<br /> Kec. Kencong, Kab. Jember (68167)</div>
+        <div>082332555886</div>
+        <div><a href="mailto:info@chayo.web.id">info@chayo.web.id</a></div>
     </div>
 </main>
-<footer>
-    Invoice was created on a computer and is valid without the signature and seal.
-</footer>
+{{--<img src="invoice-assets-2/footer-ornament.jpg" style="bottom: 0; left: 0;">--}}
 </body>
 </html>
