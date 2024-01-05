@@ -4,8 +4,13 @@
     <meta charset="utf-8">
     <title>invoice-{{strtolower($customer['name'])}}-{{str_replace(' ', '-', strtolower($formattedDate))}}</title>
     <link rel="stylesheet" href="invoice-assets-2/style.css" media="all" />
+
 </head>
 <body>
+@isset($payment)
+    <div class="invoice-ribbon"><div class="ribbon-inner">PAID</div></div>
+@endisset
+
 <header class="clearfix">
     <div id="logo">
         <img src="invoice-assets-2/main-logo.png">
@@ -26,33 +31,55 @@
     <table>
         <thead>
         <tr>
-            <th>NO</th>
-            <th>DESKRIPSI</th>
-            <th>HARGA</th>
-            <th>QTY</th>
-            <th>TOTAL</th>
+            <th><b>NO</b></th>
+            <th><b>DESKRIPSI</b></th>
+            <th><b>HARGA</b></th>
+            <th><b>QTY</b></th>
+            <th><b>TOTAL</b></th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td class="qty">1</td>
-            <td class="desc">Tagihan Wifi {{ $formattedDate }}</td>
-            <td class="unit">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
-            <td class="qty">1</td>
-            <td class="total">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
-        </tr>
-{{--        <tr>--}}
-{{--            <td colspan="4">SUBTOTAL</td>--}}
-{{--            <td class="total">$5,200.00</td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td colspan="4">TAX 25%</td>--}}
-{{--            <td class="total">$1,300.00</td>--}}
-{{--        </tr>--}}
-        <tr>
-            <td colspan="4" class="grand total">GRAND TOTAL</td>
-            <td class="grand total">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
-        </tr>
+            @isset($payment)
+                <td class="desc">Tagihan Wifi bulan ({{ $payment['description'] }})</td>
+                <td class="unit">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
+                <td class="qty">{{ $payment['nominal'] / $customer['bill'] }}</td>
+                <td class="total">Rp. {{ number_format($payment['nominal'], 0, ',', '.') }}</td>
+            </tr>
+            {{--        <tr>--}}
+            {{--            <td colspan="4">SUBTOTAL</td>--}}
+            {{--            <td class="total">$5,200.00</td>--}}
+            {{--        </tr>--}}
+            {{--        <tr>--}}
+            {{--            <td colspan="4">TAX 25%</td>--}}
+            {{--            <td class="total">$1,300.00</td>--}}
+            {{--        </tr>--}}
+            <tr>
+                <td colspan="4" class="grand total"><b>GRAND TOTAL</b></td>
+                <td class="grand total"><b>Rp. {{ number_format($payment['nominal'], 0, ',', '.') }}</b></td>
+            </tr>
+            @endisset
+            @isset($invoice)
+                <td class="desc">Tagihan Wifi {{ $formattedDate }}</td>
+                <td class="unit">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
+                <td class="qty">1</td>
+                <td class="total">Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</td>
+                </tr>
+                {{--        <tr>--}}
+                {{--            <td colspan="4">SUBTOTAL</td>--}}
+                {{--            <td class="total">$5,200.00</td>--}}
+                {{--        </tr>--}}
+                {{--        <tr>--}}
+                {{--            <td colspan="4">TAX 25%</td>--}}
+                {{--            <td class="total">$1,300.00</td>--}}
+                {{--        </tr>--}}
+                <tr>
+                    <td colspan="4" class="grand total"><b>GRAND TOTAL</b></td>
+                    <td class="grand total"><b>Rp. {{ number_format($customer['bill'], 0, ',', '.') }}</b></td>
+                </tr>
+            @endisset
+
         </tbody>
     </table>
     <br>

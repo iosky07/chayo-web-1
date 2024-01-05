@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\Payment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -51,7 +52,7 @@ class PaymentController extends Controller
 
         $formattedDate = $dateTime->format('F Y');
 
-        $pdf = Pdf::loadView('invoices.invoice', compact('customer', 'id', 'payment', 'formattedDate'));
+        $pdf = Pdf::loadView('file_print.pdf', compact('customer', 'id', 'payment', 'formattedDate'));
 
         return $pdf->stream('receipt-'.strtolower($customer['name']).'-'.str_replace(' ', '-', strtolower($formattedDate)).'.pdf');
     }

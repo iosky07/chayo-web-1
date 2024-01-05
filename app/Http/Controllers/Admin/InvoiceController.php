@@ -43,7 +43,7 @@ class InvoiceController extends Controller
 
         $formattedDate = $dateTime->format('F Y');
 
-        $pdf = Pdf::loadView('invoices.invoice', compact('customer', 'id', 'invoice', 'formattedDate'));
+        $pdf = Pdf::loadView('file_print.pdf', compact('customer', 'id', 'invoice', 'formattedDate'));
 
         return $pdf->stream('invoice-'.strtolower($customer['name']).'-'.str_replace(' ', '-', strtolower($formattedDate)).'.pdf');
     }

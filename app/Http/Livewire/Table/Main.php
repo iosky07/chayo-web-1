@@ -375,6 +375,20 @@ class Main extends Component
 
         $invoice = Invoice::whereCustomerId($data['customer_id'])->whereStatus('unpaid')->pluck('id')->all();
 
+        $bulanList = Invoice::selectRaw('DISTINCT YEAR(selected_date) as tahun, MONTHNAME(selected_date) as bulan')
+            ->orderBy('tahun', 'asc')
+            ->orderBy('bulan', 'asc')
+            ->get()
+            ->map(function ($item) {
+                return $item->bulan . ' ' . $item->tahun;
+            });
+
+        $bulanList = $bulanList->toArray();
+        $hasilAkhir = implode(', ', $bulanList);
+
+        $this->payment['description'] = $hasilAkhir;
+
+//        dd($this->payment);
         Payment::find($id)->update($this->payment);
 
         $total_bill = Customer::find($data['customer_id']);

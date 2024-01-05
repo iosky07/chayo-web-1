@@ -11,7 +11,7 @@ class Payment extends Model
 
     protected $keyType = 'integer';
 
-    protected $fillable = ['payment_method', 'payment_picture', 'nominal', 'customer_id', 'status', 'user_id', 'created_at', 'updated_at'];
+    protected $fillable = ['payment_method', 'payment_picture', 'nominal', 'description', 'customer_id', 'status', 'user_id', 'created_at', 'updated_at'];
 
     public static function search($query)
     {

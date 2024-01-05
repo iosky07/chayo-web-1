@@ -88,6 +88,46 @@ table {
 /*  background: #F5F5F5;*/
 /*}*/
 
+.invoice-ribbon {
+    width:85px;
+    height:88px;
+    /*overflow:hidden;*/
+    position:absolute;
+    top:-40px;
+    right:-90px;
+}
+
+.ribbon-inner {
+    font-family: "Bali Sunrise";
+    /*font-size: 100px;*/
+    text-align:center;
+    -webkit-transform:rotate(45deg);
+    -moz-transform:rotate(45deg);
+    -ms-transform:rotate(45deg);
+    -o-transform:rotate(45deg);
+    position:relative;
+    padding:7px 0;
+    left:-5px;
+    top:11px;
+    width:120px;
+    background-color:#66c591;
+    font-size:15px;
+    color:#fff;
+}
+
+.ribbon-inner:before,.ribbon-inner:after {
+    content:"";
+    position:absolute;
+}
+
+.ribbon-inner:before {
+    left:0;
+}
+
+.ribbon-inner:after {
+    right:0;
+}
+
 table th,
 table td {
   text-align: center;
@@ -144,3 +184,5 @@ footer {
   padding: 8px 0;
   text-align: center;
 }
+
+

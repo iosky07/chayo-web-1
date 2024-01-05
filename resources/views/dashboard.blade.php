@@ -66,24 +66,16 @@
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="card card-statistic-2">
                         <div class="card-stats">
-                            <div class="card-stats-title">Order Statistics -
+                            <div class="card-stats-title">
                                 <div class="dropdown d-inline">
-                                    <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                                    <ul class="dropdown-menu dropdown-menu-sm">
-                                        <li class="dropdown-title">Select Month</li>
-                                        <li><a href="#" class="dropdown-item">January</a></li>
-                                        <li><a href="#" class="dropdown-item">February</a></li>
-                                        <li><a href="#" class="dropdown-item">March</a></li>
-                                        <li><a href="#" class="dropdown-item">April</a></li>
-                                        <li><a href="#" class="dropdown-item">May</a></li>
-                                        <li><a href="#" class="dropdown-item">June</a></li>
-                                        <li><a href="#" class="dropdown-item">July</a></li>
-                                        <li><a href="#" class="dropdown-item active">August</a></li>
-                                        <li><a href="#" class="dropdown-item">September</a></li>
-                                        <li><a href="#" class="dropdown-item">October</a></li>
-                                        <li><a href="#" class="dropdown-item">November</a></li>
-                                        <li><a href="#" class="dropdown-item">December</a></li>
-                                    </ul>
+                                    <a class="section-title" data-toggle="dropdown" href="#" id="orders-month">TAGIHAN</a>
+                                    <div class="form-group">
+                                        <select class="form-control select">
+                                            @foreach($invoice_months as $im)
+                                                <option>{{ $im[0] }} (Rp. {{ number_format($im[1], 0, ',', '.') }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-icon shadow-primary bg-primary">
@@ -94,7 +86,7 @@
                                     <h4>Sisa Tagihan Bulan Lalu</h4>
                                 </div>
                                 <div class="card-body">
-                                    Rp. {{ number_format($prev_months, 0, ',', '.') }}
+                                    Rp. {{ number_format($prev_month_i, 0, ',', '.') }}
                                 </div>
                             </div>
                         </div>
@@ -106,25 +98,80 @@
                                 <h4>Tagihan Bulan Ini</h4>
                             </div>
                             <div class="card-body">
-                                Rp. {{ number_format($this_month, 0, ',', '.') }}
+                                Rp. {{ number_format($invoice_months[$this_month_index_i][1], 0, ',', '.') }}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="card card-statistic-2">
-                        <div class="card-chart">
-                            <canvas id="balance-chart" height="80"></canvas>
+                        <div class="card-stats">
+                            <div class="card-stats-title">
+                                <div class="dropdown d-inline">
+                                    <a class="section-title" data-toggle="dropdown" href="#" id="orders-month">PEMBAYARAN</a>
+                                    <div class="form-group">
+                                        <select class="form-control select">
+                                            @foreach($payment_months as $pm)
+                                                <option>{{ $pm[0] }} (Rp. {{ number_format($pm[1], 0, ',', '.') }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-icon shadow-primary bg-primary">
+                                <i class="fas fa-archive"></i>
+                            </div>
+                            <div class="card-wrap">
+                                <div class="card-header">
+                                    <h4>Pembayaran Bulan Lalu</h4>
+                                </div>
+                                <div class="card-body">
+                                    Rp. {{ number_format($prev_month_p, 0, ',', '.') }}
+                                </div>
+                            </div>
                         </div>
                         <div class="card-icon shadow-primary bg-primary">
-                            <i class="fas fa-dollar-sign"></i>
+                            <i class="fas fa-archive"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Tagihan</h4>
+                                <h4>Pembayaran Bulan Ini</h4>
                             </div>
                             <div class="card-body">
-                                Rp. {{ number_format($sum_total_bill, 0, ',', '.') }}
+                                Rp. {{ number_format($payment_months[$this_month_index_p][1], 0, ',', '.') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="card card-statistic-2">
+                        <div class="card-stats">
+                            <div class="card-stats-title">
+                                <div class="dropdown d-inline">
+                                    <a class="section-title" data-toggle="dropdown" href="#" id="orders-month">TOTAL AKHIR</a>
+                                </div>
+                            </div>
+                            <div class="card-icon shadow-primary bg-primary">
+                                <i class="fas fa-archive"></i>
+                            </div>
+                            <div class="card-wrap">
+                                <div class="card-header">
+                                    <h4>Total Tagihan</h4>
+                                </div>
+                                <div class="card-body">
+                                    Rp. {{ number_format($sum_month_i, 0, ',', '.') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-icon shadow-primary bg-primary">
+                            <i class="fas fa-archive"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Pembayaran</h4>
+                            </div>
+                            <div class="card-body">
+                                Rp. {{ number_format($sum_month_p, 0, ',', '.') }}
                             </div>
                         </div>
                     </div>
