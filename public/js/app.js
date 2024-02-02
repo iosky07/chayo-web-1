@@ -19571,6 +19571,40 @@ function dataTableController(id) {
                   Livewire.emit('customerIsolate', _this.id);
               }
           });
+      }, salesDecline: function salesDecline() {
+          var _this = this;
+          console.log(this);
+
+          Swal.fire({
+              title: 'Apakah kamu yakin untuk menolak calon pelanggan?',
+              text: "Aksi tidak bisa dikembalikan!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ya, tolak!'
+          }).then(function (result) {
+              if (result.isConfirmed) {
+                  Livewire.emit('salesDecline', _this.id);
+              }
+          });
+      }, salesAccept: function salesAccept() {
+          var _this = this;
+          console.log(this);
+
+          Swal.fire({
+              title: 'Apakah kamu yakin untuk menerima calon pelanggan?',
+              text: "Aksi tidak bisa dikembalikan!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ya, terima!'
+          }).then(function (result) {
+              if (result.isConfirmed) {
+                  Livewire.emit('salesAccept', _this.id);
+              }
+          });
       }
   };
 }
@@ -19623,6 +19657,20 @@ function dataTableMainController() {
       Livewire.on('customerIsolateResult', function (result) {
           if (result.status) {
               Swal.fire('Pelanggan berhasil terisolir!', result.message, 'success');
+          } else {
+              Swal.fire('Error!', result.message, 'error');
+          }
+      });
+      Livewire.on('salesDeclineResult', function (result) {
+           if (result.status) {
+               Swal.fire('Calon pelanggan berhasil ditolak!', result.message, 'success');
+           } else {
+               Swal.fire('Error!', result.message, 'error');
+           }
+      });
+      Livewire.on('salesAcceptResult', function (result) {
+          if (result.status) {
+              Swal.fire('Calon pelanggan berhasil diterima!', result.message, 'success');
           } else {
               Swal.fire('Error!', result.message, 'error');
           }

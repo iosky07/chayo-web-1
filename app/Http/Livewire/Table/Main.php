@@ -6,28 +6,35 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Log;
 use App\Models\Payment;
+use App\Models\Sales;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Main extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     public $model;
     public $name;
     public $customer;
+    public $sales;
     public $payment;
+    public $identity_picture;
+    public $location_picture;
+
 
     public $perPage = 10;
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
 
-    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment", "acceptPayment" => "accept_payment", "declinePayment" => "decline_payment", "customerSuspend" => "customer_suspend", "customerIsolate" => "customer_isolate" ];
+    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment", "acceptPayment" => "accept_payment", "declinePayment" => "decline_payment", "customerSuspend" => "customer_suspend", "customerIsolate" => "customer_isolate", "salesDecline" => "sales_decline", "salesAccept" => "sales_accept" ];
 
     public function sortBy($field)
     {
@@ -251,18 +258,19 @@ class Main extends Component
                 ];
                 break;
 
-            case 'sales':
+            case 'sale':
                 $sales = $this->model::search($this->search)
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                     ->paginate($this->perPage);
 
+//                dd($sales);
                 return [
                     "view" => 'livewire.table.sales',
-                    "sales" => $sales,
+                    "sale" => $sales,
                     "data" => array_to_object([
                         'href' => [
                             'create_new' => route('admin.sales.create'),
-                            'create_new_text' => 'Buat Customer Baru',
+                            'create_new_text' => 'Buat Customer Sales Baru',
                             'export' => '#',
                             'export_text' => 'Export'
                         ]
@@ -556,6 +564,73 @@ class Main extends Component
             'activity' => 'Isolate customer id '.$data['id'].' from '.$this->name.' table.'
         ];
         Log::create($this->log);
+    }
+
+    public function sales_decline ($id)
+    {
+        $data = $this->model::find($id);
+        $this->sales['status'] = 'decline';
+
+        Sales::find($id)->update($this->sales);
+
+        if (!$data) {
+            $this->emit("salesDeclineResult", [
+                "status" => false,
+                "message" => "Gagal menambah data " . $this->name
+            ]);
+            return;
+        }
+
+        $this->emit("salesDeclineResult", [
+            "status" => true,
+            "message" => "Data calon pelanggan " . $this->name . " berhasil ditolak!"
+        ]);
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'Sales Decline',
+            'activity' => 'Decline customer for Sales id '.$this->id.' from '.$this->name.' table.'
+        ];
+
+        Log::create($this->log);
+
+    }
+
+    public function sales_accept ($id)
+    {
+        $data = $this->model::find($id);
+        $this->customer['id'] = Customer::latest('id')->value('id') + 1;
+        $this->customer['name'] = $data['name'];
+        $this->customer['address'] = $data['address'];
+        $this->customer['phone_number'] = $data['phone_number'];
+        $this->customer['packet_tag_id'] = (int)$data['packet_tag_id'];
+        $this->customer['identity_picture'] = $data['identity_picture'];
+        $this->customer['location_picture'] = $data['location_picture'];
+        $this->customer['longitude'] = $data['longitude'];
+        $this->customer['latitude'] = $data['latitude'];
+        $this->customer['identity_number'] = $data['identity_number'];
+        $this->customer['bill'] = $data['bill'];
+
+        $this->customer['user_id'] = Auth::id();
+
+        Customer::create($this->customer);
+
+        #menghapus data
+        $data->delete();
+        $this->temp = Customer::latest('id')->first();
+
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'create',
+            'activity' => 'create customer id '.$this->temp['id'].' in Customer table'
+        ];
+
+        Log::create($this->log);
+
+        $this->emit("salesAcceptResult", [
+            "status" => true,
+            "message" => "Data calon pelanggan " . $this->name . " berhasil diterima!"
+        ]);
     }
 
     public function render()

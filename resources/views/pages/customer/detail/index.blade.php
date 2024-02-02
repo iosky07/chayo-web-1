@@ -53,7 +53,7 @@
                                     @foreach($customer as $cust)
                                         <td>Nomor Telepon :</td>
                                         <td>
-                                            {{ $cust->phone_number }}%20%20%20
+                                            {{ $cust->phone_number }}   
                                             <a href="https://wa.me/{{'62'.substr($cust->phone_number, 1)}}" class="btn btn-success trigger--fire-modal-5" target="_blank"><i class="fa fa-16px fa-phone"> </i> Whatsapp</a>
                                         </td>
                                     @endforeach

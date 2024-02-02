@@ -12,7 +12,7 @@ class SalesController extends Controller
     public function index()
     {
         return view('pages.sales.index', [
-            'cust' => Sales::class
+            'sales' => Sales::class
         ]);
 
     }
