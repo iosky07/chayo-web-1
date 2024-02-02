@@ -62,8 +62,7 @@
                             <td>{{ $p->id }}</td>
                             <td>{{ \App\Models\Customer::whereId($p->customer_id)->value('name') }}</td>
                             <td>
-                                <img src="{{ asset('storage/img/payment_picture/'.$p->payment_picture) }}" alt=""
-                                     style="width: 100px">
+                                <img src="{{ asset('storage/img/payment_picture/'.$p->payment_picture) }}" alt="" style="width: 100px">
                             </td>
                             <td>Rp. {{ number_format($p->nominal, 0, ',', '.') }}</td>
                             <td>

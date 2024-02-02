@@ -21,11 +21,20 @@ if (Auth::user()->role==1) {
                 ],
 
                 [
-                    "section_text" => "Paket Wifi",
+                    "section_text" => "Paket",
                     "section_icon" => "fa fa-users",
                     "section_list" => [
-                        ["href" => "admin.packet-tag.index", "text" => "Data Paket Wifi"],
+                        ["href" => "admin.packet-tag.index", "text" => "Data Paket"],
                         ["href" => "admin.packet-tag.create", "text" => "Tambah Jenis Paket"]
+                        ]
+                ],
+
+                [
+                    "section_text" => "Sales",
+                    "section_icon" => "fa fa-users",
+                    "section_list" => [
+                        ["href" => "admin.sales.index", "text" => "Data Pelanggan Sales"],
+                        ["href" => "admin.sales.create", "text" => "Tambah Pelanggan Sales"]
                         ]
                 ],
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdditionController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\CustomerDetailController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LogController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\OffenseController;
 use App\Http\Controllers\Admin\PacketTagController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\SalesController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentDetailController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -61,6 +63,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verif
         Route::resource('member', MemberController::class);
     });
     Route::resource('customer', CustomerController::class);
+    Route::get('/customer/detail/index/{customerId}', [CustomerDetailController::class, 'customer_detail'])->name('customer_detail');
     Route::get('/invoice/index/{customerId}', [InvoiceController::class, 'index_with_id'])->name('index_with_id');
     Route::get('/payment/index/{customerId}', [PaymentController::class, 'payment_index_with_id'])->name('payment_index_with_id');
     Route::get('/invoice/create/{customerId}', [InvoiceController::class, 'create_with_id'])->name('create_with_id');
@@ -71,6 +74,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verif
     Route::resource('payment', PaymentController::class);
     Route::resource('packet-tag', PacketTagController::class);
     Route::resource('log', LogController::class);
+    Route::resource('sales', SalesController::class);
 //    Route::resource('exportToTxt', ExportController::class);
     Route::get('/log/export', [ExportController::class, 'exportToTxt'])->name('exportToTxt');
 //    Route::middleware(['checkRole:1']){}

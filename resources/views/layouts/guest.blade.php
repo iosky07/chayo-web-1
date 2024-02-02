@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Chayo Anugrah Teknologi</title>
 
+        <link rel="icon" href={{asset("template-assets/assets/img/chayo/favicon.ico")}} type="img/ico">
+        <link href={{asset("template-assets/assets/img/apple-touch-icon.png")}} rel="apple-touch-icon">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
 

@@ -8,6 +8,9 @@
 {{--        <title>{{ config('app.name', 'Chayo') }}</title>--}}
         <title>Chayo Anugrah Teknologi</title>
 
+        <link rel="icon" href={{asset("template-assets/assets/img/chayo/favicon.ico")}} type="img/ico">
+        <link href={{asset("template-assets/assets/img/apple-touch-icon.png")}} rel="apple-touch-icon">
+
         @isset($meta)
             {{ $meta }}
         @endisset

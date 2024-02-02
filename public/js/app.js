@@ -19554,6 +19554,23 @@ function dataTableController(id) {
                   Livewire.emit('customerSuspend', _this.id);
               }
           });
+      }, customerIsolate: function customerIsolate() {
+          var _this = this;
+          console.log(this);
+
+          Swal.fire({
+              title: 'Apakah kamu yakin untuk isolir pelanggan?',
+              text: "Aksi tidak bisa dikembalikan!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ya, isolir!'
+          }).then(function (result) {
+              if (result.isConfirmed) {
+                  Livewire.emit('customerIsolate', _this.id);
+              }
+          });
       }
   };
 }
@@ -19599,6 +19616,13 @@ function dataTableMainController() {
       Livewire.on('customerSuspendResult', function (result) {
           if (result.status) {
               Swal.fire('Pelanggan berhasil suspend!', result.message, 'success');
+          } else {
+              Swal.fire('Error!', result.message, 'error');
+          }
+      });
+      Livewire.on('customerIsolateResult', function (result) {
+          if (result.status) {
+              Swal.fire('Pelanggan berhasil terisolir!', result.message, 'success');
           } else {
               Swal.fire('Error!', result.message, 'error');
           }

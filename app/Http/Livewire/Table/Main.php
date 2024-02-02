@@ -27,7 +27,7 @@ class Main extends Component
     public $sortAsc = false;
     public $search = '';
 
-    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment", "acceptPayment" => "accept_payment", "declinePayment" => "decline_payment", "customerSuspend" => "customer_suspend" ];
+    protected $listeners = [ "deleteItem" => "delete_item", "addInvoice" => "add_invoice", "addPayment" => "add_payment", "acceptPayment" => "accept_payment", "declinePayment" => "decline_payment", "customerSuspend" => "customer_suspend", "customerIsolate" => "customer_isolate" ];
 
     public function sortBy($field)
     {
@@ -244,6 +244,25 @@ class Main extends Component
                         'href' => [
                             'create_new_payment' => route('admin.payment_create_with_id', intval(substr(url()->current(), -12))),
                             'create_new_text' => 'Buat Pembayaran Baru',
+                            'export' => '#',
+                            'export_text' => 'Export'
+                        ]
+                    ])
+                ];
+                break;
+
+            case 'sales':
+                $sales = $this->model::search($this->search)
+                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                    ->paginate($this->perPage);
+
+                return [
+                    "view" => 'livewire.table.sales',
+                    "sales" => $sales,
+                    "data" => array_to_object([
+                        'href' => [
+                            'create_new' => route('admin.sales.create'),
+                            'create_new_text' => 'Buat Customer Baru',
                             'export' => '#',
                             'export_text' => 'Export'
                         ]
@@ -508,6 +527,35 @@ class Main extends Component
 
         Log::create($this->log);
 
+    }
+
+    public function customer_isolate ($id)
+    {
+        $data = $this->model::find($id);
+
+        $this->customer['status'] = 'isolated';
+        $this->customer['isolate_date'] = Carbon::now();
+
+        Customer::find($id)->update($this->customer);
+
+        if (!$data) {
+            $this->emit("customerIsolatedResult", [
+                "status" => false,
+                "message" => "Gagal menambah data " . $this->name
+            ]);
+            return;
+        }
+
+        $this->emit("customerIsolatedResult", [
+            "status" => true,
+            "message" => "Pelanggan " . $this->name . " berhasil diisolir!"
+        ]);
+        $this->log = [
+            'user_id' => Auth::id(),
+            'access' => 'Isolate',
+            'activity' => 'Isolate customer id '.$data['id'].' from '.$this->name.' table.'
+        ];
+        Log::create($this->log);
     }
 
     public function render()

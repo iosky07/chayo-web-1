@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\DateMonth;
 use App\Models\Invoice;
+use App\Models\Log;
 use App\Models\PacketTag;
 use Carbon\Carbon;
 use Cassandra\Custom;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -64,7 +66,7 @@ class CustomerController extends Controller
                     } else {
                         if ($current_year == $invoice_year) {
                             if ($current_month > $invoice_month) {
-                                dd('tengah'.$customer['id']);
+//                                dd('tengah'.$customer['id']);
 
                                 $id = $customer['id'];
 
@@ -102,6 +104,45 @@ class CustomerController extends Controller
 //            $current_date = Carbon::parse("2024-01-12 00:00:00");
             $this->date_month['save_date_per_month'] = $current_date->firstOfMonth();
             DateMonth::create($this->date_month);
+        }
+
+        #mengecek bagian isolir
+        if ($daysDifference > 20) {
+            foreach ($customers as $customer) {
+                $id = $customer['id'];
+                if ($customer['status'] == 'unpaid') {
+                    $this->customer['status'] = 'isolate';
+                    $this->customer['isolate_date'] = Carbon::now();
+
+                    Customer::find($id)->update($this->customer);
+                    $this->log = [
+                        'user_id' => Auth::id(),
+                        'access' => 'Isolate (auto)',
+                        'activity' => 'Auto isolate customer id '.$id.' from customer table.'
+                    ];
+                    Log::create($this->log);
+                }
+            }
+        }
+
+        foreach ($customers as $customer) {
+            $id = $customer['id'];
+            if($customer['status'] == 'isolate') {
+                $days_diff = $current_date->diffInDays($customer['isolate_date']);
+                if ($days_diff >= 60) {
+                    $this->customer['status'] = 'suspend';
+                    $this->customer['isolate_date'] = NULL;
+
+                    Customer::find($id)->update($this->customer);
+
+                    $this->log = [
+                        'user_id' => Auth::id(),
+                        'access' => 'Suspend (auto)',
+                        'activity' => 'Auto suspend customer id '.$id.' from customer table.'
+                    ];
+                    Log::create($this->log);
+                }
+            }
         }
 
 
