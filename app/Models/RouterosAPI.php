@@ -126,7 +126,7 @@ class RouterosAPI extends Model
                 }
                 fclose($this->socket);
             }
-            sleep($this->write());
+            sleep(1);
         }
 
 //        dd($this->delay);

@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\StudentDetailController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\Admin\TechnicianController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
@@ -57,6 +58,8 @@ Route::get('update-photo',function (){
 Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verified'])->group(function() {
     Route::post('/summernote-upload',[SupportController::class,'upload'])->name('summernote_upload');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/technician', [TechnicianController::class, 'index'])->name('technician');
+    Route::get('/technician/{sn}', [TechnicianController::class, 'index_check']);
     Route::get('/invoices/{customerId}', [InvoiceController::class, 'generatePDF'])->name('invoice');
     Route::get('/payment/{customerId}', [InvoiceController::class, 'payment'])->name('payment');
     Route::middleware(['checkRole:1,2'])->group(function () {
@@ -75,6 +78,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verif
     Route::resource('packet-tag', PacketTagController::class);
     Route::resource('log', LogController::class);
     Route::resource('sales', SalesController::class);
+    Route::resource('technician', TechnicianController::class);
 //    Route::resource('exportToTxt', ExportController::class);
     Route::get('/log/export', [ExportController::class, 'exportToTxt'])->name('exportToTxt');
 //    Route::middleware(['checkRole:1']){}
