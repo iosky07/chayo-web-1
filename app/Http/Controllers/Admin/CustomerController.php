@@ -8,6 +8,7 @@ use App\Models\DateMonth;
 use App\Models\Invoice;
 use App\Models\Log;
 use App\Models\PacketTag;
+use App\Models\RouterosAPI;
 use Carbon\Carbon;
 use Cassandra\Custom;
 use DateTime;
@@ -106,6 +107,24 @@ class CustomerController extends Controller
             DateMonth::create($this->date_month);
         }
 
+//        $ip = '103.164.192.69';
+//        $user = 'Arie';
+//        $pass = 'Dafiq190701';
+//        $API = new RouterosAPI();
+//        $API->debug('false');
+//
+//        if ($API->connect($ip, $user, $pass)) {
+//            $user_on = $API->comm('/ppp/active/print');
+//            for ($i=0; $i <= count($user_on); $i++) {
+////                dd($i);
+//                $API->comm('/ppp/active/remove', array('numbers' => $i));
+//            }
+//        } else {
+//            return 'Koneksi Gagal';
+//        }
+//        dd($user_on);
+//        foreach ($user_on as $item)
+
         #mengecek bagian isolir
         if ($daysDifference > 20) {
             foreach ($customers as $customer) {
@@ -113,6 +132,8 @@ class CustomerController extends Controller
                 if ($customer['status'] == 'unpaid') {
                     $this->customer['status'] = 'isolate';
                     $this->customer['isolate_date'] = Carbon::now();
+
+                    //
 
                     Customer::find($id)->update($this->customer);
                     $this->log = [

@@ -58,8 +58,9 @@ Route::get('update-photo',function (){
 Route::name('admin.')->prefix('admin')->middleware(['auth:sanctum','web', 'verified'])->group(function() {
     Route::post('/summernote-upload',[SupportController::class,'upload'])->name('summernote_upload');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/technician', [TechnicianController::class, 'index'])->name('technician');
-    Route::get('/technician/{sn}', [TechnicianController::class, 'index_check']);
+    Route::get('/technician/user_uptime', [TechnicianController::class, 'index'])->name('technician');
+    Route::get('/technician/user_uptime/{sn}', [TechnicianController::class, 'index_check']);
+    Route::get('/technician/olt_user_offline', [TechnicianController::class, 'olt_user_offline'])->name('olt_user_offline');
     Route::get('/invoices/{customerId}', [InvoiceController::class, 'generatePDF'])->name('invoice');
     Route::get('/payment/{customerId}', [InvoiceController::class, 'payment'])->name('payment');
     Route::middleware(['checkRole:1,2'])->group(function () {

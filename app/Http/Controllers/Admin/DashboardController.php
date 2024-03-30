@@ -9,6 +9,7 @@ use App\Models\RouterosAPI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Borisuu\Telnet\TelnetClient;
 //use phpseclib3\Net\SSH2;
 
 class DashboardController extends Controller

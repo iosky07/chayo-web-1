@@ -60,7 +60,7 @@ if (Auth::user()->role==1) {
                     "section_icon" => "fa fa-users",
                     "section_list" => [
                         ["href" => "admin.technician.index", "text" => "Cek Uptime"],
-                        ["href" => "admin.technician.user_offline", "text" => "Cek Offline"],
+                        ["href" => "admin.olt_user_offline", "text" => "Cek Offline"],
                         ]
                 ],
 

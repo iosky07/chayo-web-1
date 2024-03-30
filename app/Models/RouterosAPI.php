@@ -388,7 +388,7 @@ class RouterosAPI extends Model
             } elseif (gettype($param2) == 'boolean') {
                 fwrite($this->socket, ($param2 ? chr(0) : ''));
             }
-//            dd($param2);
+//            dd($command);
 
             return true;
         } else {
@@ -434,7 +434,7 @@ class RouterosAPI extends Model
             }
         }
 
-//        dd($this->read());
+//        dd($com);
         return $this->read();
     }
 
